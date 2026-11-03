@@ -1,0 +1,9 @@
+node_modules/
+server/data/
+dist/
+.DS_Store
+*.log
+# secrets: API keys live only in .env.local (never commit)
+.env
+.env.*
+!.env.example

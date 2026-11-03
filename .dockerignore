@@ -1,0 +1,12 @@
+# never send local data, secrets or dev stuff into the image build
+**/node_modules
+server/data
+**/.env*
+!server/.env.example
+.git
+**/test
+tools
+mcp
+player/src
+player/node_modules
+*.log

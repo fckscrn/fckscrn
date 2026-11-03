@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>FckScrn</title>
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <style>
+    /* door sign for a TV next to the room: now / next, readable from across the hall */
+    html, body { margin: 0; height: 100%; background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; overflow: hidden; cursor: none; }
+    /* the organizer's own artwork / animation / video fills the screen; a shade keeps the text readable */
+    .bg { position: fixed; inset: 0; z-index: 0; }
+    .bg img, .bg video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.35) 40%, rgba(0,0,0,.75)); }
+    .s { position: relative; z-index: 1; text-shadow: 0 .2vh 1.2vh rgba(0,0,0,.5); }
+    .s { height: 100%; box-sizing: border-box; padding: 6vh 6vw; display: grid; grid-template-rows: auto 1fr auto auto; gap: 4vh; }
+    .top { display: flex; justify-content: space-between; align-items: baseline; }
+    .room { font-size: 7vh; font-weight: 800; letter-spacing: -.03em; }
+    .clock { font: 600 6vh ui-monospace, Menlo, monospace; }
+    .lbl { font-size: 2.6vh; text-transform: uppercase; letter-spacing: .14em; opacity: .6; margin-bottom: 1.5vh; }
+    .now h1 { font-size: 9vh; line-height: 1.05; letter-spacing: -.03em; margin: 0 0 2vh; }
+    .now p, .next p { font-size: 4vh; margin: 0; opacity: .8; }
+    .next { border-top: .3vh solid rgba(255,255,255,.3); padding-top: 3vh; }
+    .next h2 { font-size: 5vh; margin: 0 0 1vh; }
+    .next h2 span { font-family: ui-monospace, Menlo, monospace; margin-right: 2vw; }
+    .foot { font-size: 2vh; opacity: .5; display: flex; justify-content: space-between; }
+    .logo { font-weight: 800; letter-spacing: -.045em; }
+    .logo span { display: inline-block; margin-left: .06em; padding: 0 .14em .02em; border-radius: .14em; box-shadow: inset 0 0 0 .09em currentColor; }
+  </style>
+</head>
+<body>
+  <div class="bg" id="bg" hidden></div>
+  <div class="s" id="s"></div>
+  <script type="module" src="/assets/sign.js"></script>
+</body>
+</html>

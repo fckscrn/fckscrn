@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>Cookies a měření · FckScrn</title>
+  <meta name="description" content="Jaké cookies a údaje v prohlížeči FckScrn používá a kdy měříme návštěvnost.">
+  <link rel="canonical" href="%ORIGIN%/cookies">
+  <link rel="alternate" hreflang="cs" href="%ORIGIN%/cookies">
+  <link rel="alternate" hreflang="en" href="%ORIGIN%/en/cookies">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <link rel="stylesheet" href="/assets/help.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/">Fck<span class="scrn">Scrn</span></a><span class="muted">cookies</span>
+    <details class="langmenu"><summary aria-label="Jazyk / Language">CZ</summary><div><a href="/cookies" hreflang="cs" lang="cs" aria-current="true">Čeština</a><a href="/en/cookies" hreflang="en" lang="en">English</a></div></details>
+  </header>
+  <div class="help">
+    <main class="doc" style="grid-column: 1 / -1; max-width: 760px">
+      <h1>Cookies a měření</h1>
+      <p class="lead">Krátce a po lidsku: co si web ukládá ve vašem prohlížeči a proč.</p>
+
+      <section>
+        <h2>Kdo za webem stojí</h2>
+        <p>Tomáš Foltas, IČO 06777198, Brno. Kontakt: <b>info@tomasfoltas.cz</b>.</p>
+      </section>
+
+      <section>
+        <h2>Měření návštěvnosti (jen s vaším souhlasem)</h2>
+        <p>Na veřejných stránkách (úvod, nápověda, založení akce) používáme <b>Google Analytics 4</b> přes Google Tag Manager. Pomáhá nám zjistit, co na webu lidé hledají a kde se zasekávají. Spustí se <b>až po kliknutí na „Povolit“</b>. Bez souhlasu se žádné analytické cookies neukládají (Google Consent Mode).</p>
+        <table>
+          <tr><th>Cookie</th><th>Kdo</th><th>K čemu</th><th>Jak dlouho</th></tr>
+          <tr><td><code>_ga</code></td><td>Google</td><td>rozlišení návštěvníků (anonymní ID)</td><td>2 roky</td></tr>
+          <tr><td><code>_ga_*</code></td><td>Google</td><td>stav návštěvy</td><td>2 roky</td></tr>
+        </table>
+        <p>Data zpracovává Google Ireland Ltd. a mohou být předána do USA (EU–US Data Privacy Framework). Měříme jen anonymně, bez jmen a e-mailů.</p>
+        <p><b>Kde neměříme nikdy:</b> správa akce, odkazy řečníků, počítače v sálech, telefon řečníka, stránky pro diváky (dotazy a hlasování) a cedulky u dveří. Po založení akce se měření na stránce vypne, aby se tajný odkaz nikam nedostal.</p>
+        <p><button type="button" class="btn" onclick="localStorage.removeItem('fckscrn-consent');location.reload()">Změnit souhlas s měřením</button></p>
+      </section>
+
+      <section>
+        <h2>Nezbytné údaje v prohlížeči (bez souhlasu)</h2>
+        <p>Tohle nejsou sledovací cookies. Jsou to nastavení, bez kterých by aplikace nefungovala. Zůstávají jen ve vašem prohlížeči.</p>
+        <table>
+          <tr><th>Název</th><th>K čemu</th></tr>
+          <tr><td><code>fckscrn-consent</code></td><td>vaše volba v liště cookies</td></tr>
+          <tr><td><code>fckscrn-theme</code>, <code>fckscrn-lang</code></td><td>světlý / tmavý vzhled, čeština / angličtina</td></tr>
+          <tr><td><code>fckscrn-voter</code>, <code>fckscrn-name</code></td><td>u dotazů z publika: aby jeden telefon hlasoval jednou, a jméno, které jste sami vyplnili</td></tr>
+          <tr><td><code>fckscrn:…</code>, <code>fckscrn-files</code></td><td>počítač v sále: program, nastavení obrazovek a stažené prezentace pro provoz bez internetu</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Data akcí</h2>
+        <p>Program, nahrané prezentace, dotazy a hlasování se 14 dní po datu akce smažou i se všemi soubory. Podrobnosti v <a href="/napoveda#data">nápovědě</a>.</p>
+      </section>
+    </main>
+  </div>
+  <footer class="credit"><a href="/napoveda">Nápověda</a> · FckScrn je open source · vytvořil <b>Tomáš Foltas</b>, autor <a href="https://domee.app" rel="noopener">Domee.app</a> – aplikace pro správu nemovitostí</footer>
+</body>
+</html>

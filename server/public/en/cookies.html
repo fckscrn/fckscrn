@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>Cookies and analytics · FckScrn</title>
+  <meta name="description" content="Which cookies and browser storage FckScrn uses and when we measure traffic.">
+  <link rel="canonical" href="%ORIGIN%/en/cookies">
+  <link rel="alternate" hreflang="cs" href="%ORIGIN%/cookies">
+  <link rel="alternate" hreflang="en" href="%ORIGIN%/en/cookies">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <link rel="stylesheet" href="/assets/help.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/en">Fck<span class="scrn">Scrn</span></a><span class="muted">cookies</span>
+    <details class="langmenu"><summary aria-label="Jazyk / Language">EN</summary><div><a href="/cookies" hreflang="cs" lang="cs">Čeština</a><a href="/en/cookies" hreflang="en" lang="en" aria-current="true">English</a></div></details>
+  </header>
+  <div class="help">
+    <main class="doc" style="grid-column: 1 / -1; max-width: 760px">
+      <h1>Cookies and analytics</h1>
+      <p class="lead">Short and plain: what this site stores in your browser and why.</p>
+
+      <section>
+        <h2>Who runs this site</h2>
+        <p>Tomáš Foltas, company ID (IČO) 06777198, Brno, Czech Republic. Contact: <b>info@tomasfoltas.cz</b>.</p>
+      </section>
+
+      <section>
+        <h2>Analytics (only with your consent)</h2>
+        <p>On the public pages (home, help, create an event) we use <b>Google Analytics 4</b> via Google Tag Manager to see what people look for and where they get stuck. It starts <b>only after you click “Allow”</b>. Without consent no analytics cookies are stored (Google Consent Mode).</p>
+        <table>
+          <tr><th>Cookie</th><th>By</th><th>Purpose</th><th>Lifetime</th></tr>
+          <tr><td><code>_ga</code></td><td>Google</td><td>tells visitors apart (anonymous ID)</td><td>2 years</td></tr>
+          <tr><td><code>_ga_*</code></td><td>Google</td><td>session state</td><td>2 years</td></tr>
+        </table>
+        <p>Data is processed by Google Ireland Ltd. and may be transferred to the USA (EU–US Data Privacy Framework). We measure anonymously, no names or e-mails.</p>
+        <p><b>Never measured:</b> event admin, speaker links, room computers, the speaker's phone, audience pages (questions and polls) and door signs. Once an event is created, measuring stops on that page so the secret link never leaves it.</p>
+        <p><button type="button" class="btn" onclick="localStorage.removeItem('fckscrn-consent');location.reload()">Change analytics consent</button></p>
+      </section>
+
+      <section>
+        <h2>Necessary browser storage (no consent needed)</h2>
+        <p>These are not tracking cookies but settings the app needs to work. They stay in your browser.</p>
+        <table>
+          <tr><th>Name</th><th>Purpose</th></tr>
+          <tr><td><code>fckscrn-consent</code></td><td>your choice in the cookie bar</td></tr>
+          <tr><td><code>fckscrn-theme</code>, <code>fckscrn-lang</code></td><td>light / dark look, Czech / English</td></tr>
+          <tr><td><code>fckscrn-voter</code>, <code>fckscrn-name</code></td><td>audience questions: one vote per phone, and the name you typed yourself</td></tr>
+          <tr><td><code>fckscrn:…</code>, <code>fckscrn-files</code></td><td>room computer: programme, screen setup and downloaded slides for offline use</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Event data</h2>
+        <p>Programme, uploaded slides, questions and polls are deleted, files included, 14 days after the event. Details in the <a href="/en/help#data">help</a>.</p>
+      </section>
+    </main>
+  </div>
+  <footer class="credit"><a href="/en/help">Help</a> · FckScrn is open source · made by <b>Tomáš Foltas</b>, creator of <a href="https://domee.app" rel="noopener">Domee.app</a> – a property management app</footer>
+</body>
+</html>

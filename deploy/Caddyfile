@@ -1,0 +1,16 @@
+# HTTPS certificates are issued automatically (Let's Encrypt) once DNS points here.
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy fckscrn:8080 {
+		# big uploads on slow venue wifi
+		transport http {
+			read_timeout 30m
+			write_timeout 30m
+		}
+	}
+}
+
+# other addresses that should land on the main one (a test server sets just its www.)
+{$REDIRECTS:www.fckscrn.com, fckscrn.cz, www.fckscrn.cz} {
+	redir https://{$DOMAIN}{uri} permanent
+}

@@ -1,0 +1,30 @@
+/* audience Q&A — phone first */
+.qa { max-width: 620px; margin: 0 auto; padding: 24px 18px 48px; }
+.qa h1 { font-size: 26px; margin-top: 2px; }
+.ask { display: grid; gap: 12px; margin: 22px 0 8px; padding: 16px; border: 2px solid var(--fg); border-radius: 14px; }
+.ask textarea { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); font: inherit; font-size: 16px; resize: vertical; }
+.ask textarea:focus, .ask input:focus { border-color: var(--fg); outline: none; }
+.ask input { font-size: 16px; }
+.ask .btn { width: 100%; }
+.qa-h { margin: 28px 0 10px; font-size: 18px; }
+.qlist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.qlist li { display: grid; grid-template-columns: 54px 1fr; gap: 12px; align-items: start; padding: 12px; border: 1px solid var(--line); border-radius: 12px; }
+.qlist li p { margin: 0 0 4px; font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+.qlist li .muted { font-size: 13px; }
+.qlist li.answered { opacity: .6; }
+.qlist .done { color: var(--fg); }
+.vote { display: grid; justify-items: center; gap: 2px; padding: 8px 0; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); cursor: pointer; }
+.vote .arrow { width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 9px solid var(--muted); }
+.vote b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.vote.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.vote.on .arrow { border-bottom-color: var(--bg); }
+.vote:disabled { cursor: default; }
+.foot { font-size: 12px; margin-top: 22px; }
+
+.pollcard { margin: 22px 0 8px; padding: 16px; border: 2px solid var(--fg); border-radius: 14px; background: var(--soft); }
+.pollcard h2 { font-size: 20px; margin: 2px 0 12px; }
+.pollopts { display: grid; gap: 8px; }
+.pollopts.small { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.pollopts .btn.big { width: 100%; justify-content: center; font-size: 17px; padding: 14px; }
+.pollword { display: flex; gap: 8px; }
+.pollword input { flex: 1; min-width: 0; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); }

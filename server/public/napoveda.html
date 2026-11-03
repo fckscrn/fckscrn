@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>Nápověda · FckScrn</title>
+  <meta name="description" content="Jak založit akci, nahrát prezentaci, spustit projekci v sále, ovládat FckScrn přes AI (Claude, ChatGPT) a používat API.">
+  <link rel="canonical" href="%ORIGIN%/napoveda">
+  <link rel="alternate" hreflang="cs" href="%ORIGIN%/napoveda">
+  <link rel="alternate" hreflang="en" href="%ORIGIN%/en/help">
+  <link rel="alternate" hreflang="x-default" href="%ORIGIN%/napoveda">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FckScrn">
+  <meta property="og:locale" content="cs_CZ">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:url" content="%ORIGIN%/napoveda">
+  <meta property="og:title" content="Nápověda · FckScrn">
+  <meta property="og:description" content="Jak založit akci, nahrát prezentaci, spustit projekci v sále, ovládat FckScrn přes AI (Claude, ChatGPT) a používat API.">
+  <meta property="og:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FckScrn – prezentace na akcích, které prostě fungují">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nápověda · FckScrn">
+  <meta name="twitter:description" content="Jak založit akci, nahrát prezentaci, spustit projekci v sále, ovládat FckScrn přes AI (Claude, ChatGPT) a používat API.">
+  <meta name="twitter:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+  {
+   "@type": "ListItem",
+   "position": 1,
+   "name": "FckScrn",
+   "item": "%ORIGIN%/"
+  },
+  {
+   "@type": "ListItem",
+   "position": 2,
+   "name": "Nápověda",
+   "item": "%ORIGIN%/napoveda"
+  }
+ ]
+}
+  </script>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <link rel="stylesheet" href="/assets/help.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/">Fck<span class="scrn">Scrn</span></a><span class="muted">nápověda</span>
+    <nav class="lp-nav"><a href="/">Úvod</a></nav>
+    <a class="btn small primary nav-cta" href="/nova-akce">Založit akci</a>
+    <details class="langmenu"><summary aria-label="Jazyk / Language">CZ</summary><div><a href="/napoveda" hreflang="cs" lang="cs" aria-current="true">Čeština</a><a href="/en/help" hreflang="en" lang="en">English</a></div></details>
+  </header>
+
+  <div class="help">
+    <nav class="toc" aria-label="Obsah">
+      <a href="#start">Rychlý start</a>
+      <a href="#den">Kontrolní seznam</a>
+      <a href="#program">Program a sály</a>
+      <a href="#recnici">Řečníci</a>
+      <a href="#sal">V sále</a>
+      <a href="#dotazy">Dotazy a hlasování</a>
+      <a href="#smycka">Smyčka partnerů</a>
+      <a href="#verejne">Stránka akce</a>
+      <a href="#problemy">Když něco nejde</a>
+      <a href="#aktivace">Aktivace a platba</a>
+      <a href="#data">Data a bezpečnost</a>
+      <a href="#claude">Claude a MCP</a>
+      <a href="#api">API</a>
+      <a href="#server">Vlastní server</a>
+    </nav>
+
+    <main class="doc">
+      <h1>Nápověda</h1>
+      <p class="lead">Všechno na jedné stránce. Nejdřív to, co potřebuje organizátor, technické věci jsou až na konci.</p>
+
+      <section id="start">
+        <h2>Rychlý start</h2>
+        <ol>
+          <li><b>Založte akci</b> na <a href="/nova-akce">fckscrn.com/nova-akce</a>. Vyberte jeden sál nebo víc. Dostanete <b>tajný odkaz na správu</b>, uložte si ho. Je to jediný přístup k akci, registrace není.</li>
+          <li><b>Vložte program.</b> Máte ho v Excelu nebo Google Sheets? Zkopírujte tabulku a klikněte na <b>Vložit program z Excelu</b>. Jinak přidávejte přednášky tlačítkem <b>+ Přednáška</b>.</li>
+          <li><b>Pošlete řečníkům jejich odkazy</b> (tlačítko <b>Odkaz pro řečníka</b>). Prezentaci si nahraje každý sám. Nastavte termín a ostatní za vás pohlídá tlačítko <b>Připomenout řečníkům</b>.</li>
+          <li><b>V den akce</b> otevřete na počítači u projektoru odkaz sálu v Chrome nebo Edge a spouštějte přednášky jedním tlačítkem.</li>
+        </ol>
+      </section>
+
+      <section id="den">
+        <h2>Kontrolní seznam</h2>
+        <table>
+          <tr><th>Kdy</th><th>Co udělat</th></tr>
+          <tr><td>2–3 týdny předem</td><td>Založit akci, vložit program, poslat řečníkům odkazy, nastavit <b>termín pro nahrání</b>.</td></tr>
+          <tr><td>Týden předem</td><td><b>Připomenout řečníkům</b>, kteří nenahráli. Projít náhledy a kliknout <b>V pořádku</b>. Nahrát smyčku partnerů.</td></tr>
+          <tr><td>Den předem</td><td>Na počítači pro sál otevřít odkaz sálu a nechat ho všechno stáhnout. Vyzkoušet jednu přednášku na projektoru (generálka). Zapnout <b>veřejnou stránku akce</b>, pokud ji chcete.</td></tr>
+          <tr><td>Ráno</td><td>Zapnout počítače v sálech, otevřít odkaz sálu, <b>Zapnout projekci</b> a jednou stisknout klávesu na projektoru. Na televizi u dveří otevřít cedulku sálu.</td></tr>
+          <tr><td>Během akce</td><td>Spouštět přednášky tlačítkem. Když se sál zpozdí, jedním klikem posunout program. Hlídat lištu <b>Řečník volá o pomoc</b>.</td></tr>
+          <tr><td>Po akci</td><td>Stáhnout ZIP se vším. Poslat účastníkům odkaz na stránku akce se slidy.</td></tr>
+        </table>
+      </section>
+
+      <section id="program">
+        <h2>Program a sály</h2>
+        <ul>
+          <li><b>Program z Excelu:</b> v Excelu nebo Google Sheets označte tabulku, zkopírujte ji (Cmd/Ctrl + C) a vložte do okna <b>Vložit program z Excelu</b>. Sloupce (čas, název, řečník, sál, délka) poznáme sami, i bez záhlaví. Před přidáním uvidíte náhled. Přestávky a obědy se poznají podle názvu. Čas může být i rozsah „9:15–9:45“.</li>
+          <li>Ručně: u sálu klikněte na <b>+ Přednáška</b>, <b>+ Přestávka</b> nebo <b>+ Panel</b>. Začátek se doplní sám podle konce předchozího bloku.</li>
+          <li>Upravit nebo smazat jde každou položku přímo v programu.</li>
+          <li>Akci s jedním sálem přepnete na víc sálů odkazem pod programem. Při importu se sály podle tabulky vytvoří samy.</li>
+          <li><b>Když se sál zpožďuje:</b> ovládání sálu i správa akce samy ukážou „Jedete o 12 min pozadu“. Tlačítkem <b>Posunout další program</b> se všechno, co v sále následuje, posune. Sál, cedulka u dveří i stránka akce si nové časy stáhnou samy.</li>
+        </ul>
+      </section>
+
+      <section id="recnici">
+        <h2>Řečníci</h2>
+        <ul>
+          <li>Každý řečník má vlastní odkaz. Tlačítko <b>Odkaz pro řečníka</b> ho zkopíruje.</li>
+          <li><b>Termín a připomínky:</b> nastavte <b>Termín pro nahrání prezentací</b>. Řečník ho uvidí na svém odkazu a po termínu dostane výrazné upozornění. Tlačítko <b>Připomenout řečníkům</b> připraví každému, kdo nenahrál, hotový text s odkazem. Zkopírujete ho do e-mailu, WhatsAppu nebo Slacku.</li>
+          <li>Formáty: <b>PowerPoint (.pptx)</b>, <b>Keynote (.key)</b>, <b>PDF</b>, OpenOffice (.odp), odkaz na <b>Google Slides</b>, do 2 GB. Prezentaci jde kdykoli vyměnit. Nová verze se vám znovu ukáže ke kontrole.</li>
+          <li>Po nahrání proběhne kontrola: poměr stran (16:9), videa, poznámky. Řečník hned vidí, jak bude prezentace vypadat.</li>
+          <li><b>Poznámky řečníka</b> se přenesou z PowerPointu. Keynote a PDF je nemají, ale řečník je může dopsat v náhledu ke každému slidu (ukládají se samy).</li>
+          <li>Prezentaci můžete nahrát i za řečníka (<b>Nahrát za řečníka</b>), třeba za partnera, který ji poslal e-mailem.</li>
+          <li><b>Videa z PowerPointu</b> hrají přímo v prezentaci, na svém místě na slidu, i bez internetu. Spustí se samy, nebo dalším kliknutím, podle nastavení v PowerPointu. Monitor řečníka ukáže, že další kliknutí spustí video.</li>
+          <li>Video z <b>YouTube nebo Vimea</b> se přehraje jen s internetem v sále a může před ním běžet reklama. Video, na které prezentace jen odkazuje (soubor v počítači řečníka), nebo starý formát (WMV, AVI) se nepřehraje. Řečník i vy u něj uvidíte tlačítko <b>Nahrát video</b>: nahrajte MP4 a pak hraje offline.</li>
+          <li><b>Zvuk z videí</b> jde automaticky do zvukového výstupu projektoru (HDMI), jinak do výchozího zvuku počítače. Jiný výstup (např. mixpult přes USB) zvolíte v ovládání sálu pod obrazovkami. V prohlížeči nejdřív klikněte na <b>Zobrazit zvukové výstupy</b>: Chrome názvy reproduktorů a HDMI ukáže až po povolení mikrofonu (nic se nenahrává).</li>
+        </ul>
+      </section>
+
+      <section id="sal">
+        <h2>V sále</h2>
+        <ol>
+          <li>Ve správě klikněte u sálu na <b>Připojit projekci</b> a odkaz otevřete v <b>Chrome nebo Edge</b> na počítači připojeném k projektoru.</li>
+          <li>Klikněte na <b>Povolit obrazovky</b>, aby prohlížeč viděl projektor. Když prohlížeč zablokuje okno, povolte vyskakovací okna pro FckScrn.</li>
+          <li>Vpravo nastavte, která obrazovka je <b>Projekce</b> a která <b>Monitor řečníka</b>. Nastavení si player pamatuje. Máte jen notebook a projektor? Player sám nastaví notebook na <b>Ovládání + monitor řečníka</b>: během přednášky ukáže poznámky, čas a slidy a dole tlačítka. Tlačítko <b>Program</b> vrátí celé ovládání.</li>
+          <li>Klikněte na <b>Zapnout projekci</b>. Na projektoru pak <b>jednou stiskněte libovolnou klávesu</b> nebo klikr. Okno se přepne na celou obrazovku a otevře se monitor řečníka. Bez stisku to prohlížeč nedovolí. Pak to vydrží, dokud okno nezavřete; krátké Esc projekci neshodí (v Chromu ji ukončí jen podržení Esc). Kdyby přece vyskočila, libovolná klávesa ji vrátí.</li>
+        </ol>
+        <table>
+          <tr><th>Klávesa / klikr</th><th>Co udělá</th></tr>
+          <tr><td>→, mezerník, PageDown</td><td>další slide</td></tr>
+          <tr><td>←, PageUp</td><td>předchozí slide</td></tr>
+          <tr><td>B nebo .</td><td>černá obrazovka (a zpět)</td></tr>
+          <tr><td>Esc (v ovládání)</td><td>ukončit přednášku</td></tr>
+        </table>
+        <ul>
+          <li>Záložku s ovládáním nechte otevřenou, řídí projekci. Prezentace jsou stažené dopředu, takže když vypadne internet, přehrávání pokračuje.</li>
+          <li>Mezi přednáškami projekce nikdy neukáže plochu počítače. Běží smyčka partnerů, nebo černá s názvem další přednášky.</li>
+          <li><b>Zpráva řečníkovi:</b> „Ještě 5 minut“, „Čas vypršel“ nebo vlastní text se velce rozsvítí na monitoru řečníka i na jeho telefonu. Pošle ji technik v ovládání sálu nebo organizátor ze správy akce (u sálu, který právě běží). Sama zmizí po 5 minutách.</li>
+          <li><b>Telefon jako monitor řečníka:</b> v ovládání sálu je QR kód. Řečník ho naskenuje a na telefonu vidí hlavně své poznámky, k tomu čas, aktuální, předchozí a další slide a zprávy od technika. Velkými tlačítky přepíná slidy (na slidu s videem tlačítko video spustí). Na posledním slidu tlačítkem <b>Dotazy na plátno</b> pustí dotazy publiku a odškrtává je. Hodí se do sálů bez monitoru u pódia. Telefon i počítač v sále potřebují internet.</li>
+          <li><b>Tlačítko Pomoc:</b> řečník ho má na telefonu. Technikovi se v ovládání rozbliká lišta „Řečník volá o pomoc!“ a pípne to. Organizátor to vidí ve správě. Technik klikne na <b>Jdu tam</b> a řečníkovi se ukáže „Technik je na cestě.“</li>
+          <li><b>Desktopová aplikace</b> (volitelná) se na celou obrazovku přepne sama a umí spustit originál v PowerPointu nebo Keynote. Vložte do ní stejný odkaz sálu.</li>
+        </ul>
+      </section>
+
+      <section id="dotazy">
+        <h2>Dotazy, hlasování a panely</h2>
+        <ul>
+          <li>Každá přednáška a panel má vlastní <b>QR kód</b>, malý v levém horním rohu projekce. Diváci se ptají z telefonu, jméno je nepovinné, registrace žádná. Pro zajímavé dotazy se hlasuje.</li>
+          <li>Během přednášky řečníka dotazy neruší. Na konci je technik (nebo řečník z telefonu) jedním tlačítkem pošle na plátno a teprve pak se objeví i na monitoru řečníka, u panelu jsou tam pořád. Odpovězený dotaz odškrtne řečník, moderátor, technik nebo organizátor: z plátna zmizí, na monitoru spadne dolů a překliknutí jde vrátit. Nevhodný dotaz organizátor skryje.</li>
+          <li>Tlačítko <b>Dotazy na projekci</b> v ovládání sálu ukáže dotazy přes celé plátno s velkým QR kódem.</li>
+          <li><b>Hlasování:</b> řečník na svém odkazu (nebo organizátor v okně Dotazy) napíše otázku a možnosti, každou na nový řádek, a klikne <b>Spustit hlasování</b>. Když možnosti nevyplní, lidé odpovídají jedním slovem a vznikne mrak slov. Diváci hlasují přes stejný QR kód. Tlačítko <b>Hlasování na projekci</b> v ovládání sálu ukáže výsledky na plátně, živě.</li>
+          <li><b>Panel</b> přidáte v programu tlačítkem <b>+ Panel</b>: téma, moderátor, panelisté po jednom a případně vlastní pozadí (obrázek nebo video).</li>
+          <li>U přednášky jde dotazy vypnout v okně <b>Dotazy</b>.</li>
+        </ul>
+      </section>
+
+      <section id="smycka">
+        <h2>Smyčka partnerů</h2>
+        <ul>
+          <li>Ve správě přetáhněte fotky (JPG, PNG, WebP, GIF, SVG) a videa (MP4, MOV) do <b>Smyčky partnerů</b>. Klidně víc najednou.</li>
+          <li>U fotek nastavíte, jak dlouho se ukazují, šipkami pořadí. U víc sálů můžete položku pustit jen v jednom sále. <b>Přehrát smyčku</b> ukáže, jak bude vypadat na projekci.</li>
+          <li>Videa hrají celá a bez zvuku. Smyčka běží o přestávkách a mezi přednáškami, v sále jde vypnout.</li>
+        </ul>
+      </section>
+
+      <section id="verejne">
+        <h2>Stránka akce a cedulka u dveří</h2>
+        <ul>
+          <li>Ve správě v části <b>Po akci</b> zapněte <b>Veřejnou stránku akce</b> a pošlete odkaz účastníkům.</li>
+          <li><b>Během akce</b> stránka ukazuje, co právě běží v každém sále a co bude dál. Když sál jede, bere se to, co se opravdu promítá, jinak podle programu.</li>
+          <li><b>Cedulka u dveří:</b> pod odkazem na stránku je odkaz pro každý sál. Otevřete ho na televizi nebo tabletu u dveří a nechte. Velkým písmem ukazuje „Teď“ a „Další“ a obnovuje se sama.</li>
+          <li><b>Vlastní pozadí cedulky:</b> tamtéž nahrajte obrázek (i SVG), animaci (GIF) nebo video (MP4, WebM, MOV). Hraje dokola bez zvuku a text „Teď / Další“ zůstane čitelně přes něj. Platí pro cedulky všech sálů a cedulky si ho načtou samy.</li>
+          <li><b>Po akci</b> jsou na stránce slidy (PDF) těch řečníků, kteří to na svém odkazu povolili. Stránka zmizí spolu s akcí.</li>
+        </ul>
+      </section>
+
+      <section id="problemy">
+        <h2>Když něco nejde</h2>
+        <table>
+          <tr><th>Co se děje</th><th>Co s tím</th></tr>
+          <tr><td>Projekce se otevřela na notebooku, ne na projektoru</td><td>Vpravo v ovládání nastavte u projektoru roli <b>Projekce</b>. Když projektor v seznamu není, klikněte na <b>Povolit obrazovky</b>, případně projektor odpojte a připojte.</td></tr>
+          <tr><td>Okno projekce se vůbec neotevřelo</td><td>Prohlížeč ho zablokoval. V adresním řádku povolte vyskakovací okna pro FckScrn a klikněte znovu.</td></tr>
+          <tr><td>Projekce není přes celou obrazovku</td><td>Klikněte do okna projekce nebo stiskněte klávesu či klikr. Prohlížeč potřebuje jedno stisknutí.</td></tr>
+          <tr><td>U přednášky nejde dát Spustit</td><td>Řečník ještě nenahrál, nebo z jeho souboru zatím není PDF. Podívejte se do správy. V nouzi spusťte originál v desktopové aplikaci.</td></tr>
+          <tr><td>Video v prezentaci se nepřehraje</td><td>Podívejte se k přednášce ve správě akce: video jen odkazované, z YouTube bez internetu nebo ve starém formátu tam má tlačítko Nahrát video (MP4). V nouzi spusťte originál v PowerPointu z desktopové aplikace.</td></tr>
+          <tr><td>Řečník nemá na monitoru poznámky</td><td>Prezentace je PDF nebo Keynote. Řečník je může dopsat v náhledu na svém odkazu, po synchronizaci je sál uvidí.</td></tr>
+          <tr><td>Vypadl internet</td><td>Nic se neděje, prezentace jsou stažené. Nefungují jen dotazy, hlasování, telefon řečníka a zprávy, dokud se internet nevrátí.</td></tr>
+          <tr><td>Telefon řečníka ukazuje „sál nepřipojený“</td><td>Počítač v sále nemá internet, nebo není otevřené ovládání sálu. Zkontrolujte záložku s ovládáním.</td></tr>
+          <tr><td>Ztratil se odkaz na správu</td><td>Bez něj se do akce dostat nejde. Hledejte v e-mailu nebo historii prohlížeče. Proto ho hned po založení uložte.</td></tr>
+        </table>
+      </section>
+
+      <section id="aktivace">
+        <h2>Aktivace a platba</h2>
+        <p>Online verze: akce je zdarma ve <b>zkušebním režimu</b>. Všechno funguje včetně generálky v sále, jen přes projekci je vodoznak „Zkušební režim“.</p>
+        <ul>
+          <li>Ve správě klikněte na <b>Aktivovat akci</b>, zadejte IČO (údaje se doplní z ARES) a e-mail.</li>
+          <li>Akce se aktivuje <b>hned</b> a vodoznak zmizí. Fakturu pošleme e-mailem se splatností 14 dní.</li>
+          <li>Cena za akci: jeden sál 1 490 Kč, víc sálů 4 990 Kč. Nejsem plátce DPH, cena je konečná.</li>
+        </ul>
+      </section>
+
+      <section id="data">
+        <h2>Data a bezpečnost</h2>
+        <ul>
+          <li>Kdo má odkaz na správu, může akci spravovat. Nikomu ho neposílejte. Kdyby unikl, ve správě klikněte na <b>Vytvořit nový odkaz</b>. Starý okamžitě přestane platit.</li>
+          <li>Odkazy řečníků umožní jen nahrát prezentaci k jejich přednášce. Odkaz sálu umožní jen přehrávat program sálu.</li>
+          <li>Akce se <b>14 dní po svém datu smaže</b> i se všemi soubory. Předtím si můžete vše stáhnout v jednom ZIPu (program, prezentace, poznámky, smyčka), nebo akci smazat hned.</li>
+          <li><b>Měření návštěvnosti:</b> jen na veřejných stránkách webu (úvod, nápověda) a jen s vaším souhlasem v liště „Cookies“. Správa akce, odkazy řečníků, sály ani stránky pro diváky se neměří.</li>
+        </ul>
+      </section>
+
+      <section id="claude">
+        <h2>AI asistenti a MCP</h2>
+        <p>Program můžete diktovat AI asistentovi hlasem nebo textem. FckScrn má MCP server, se kterým umí pracovat Claude, ChatGPT a další aplikace s podporou MCP. Nejjednodušší je Claude Code (příkaz níže). V aplikacích, kde se MCP přidává jako konektor (např. ChatGPT, Claude.ai), vložte adresu konektoru ze správy akce: <code>https://fckscrn.com/mcp/&lt;klíč&gt;</code>. Bez přihlašování, klíč je v adrese.</p>
+        <h3>Online verze</h3>
+        <p>Ve správě akce v sekci <b>Ovládání přes AI</b> zkopírujte příkaz a spusťte ho v terminálu:</p>
+        <pre class="cmd">claude mcp add --transport http fckscrn https://fckscrn.com/mcp --header "Authorization: Bearer &lt;klíč z odkazu na správu&gt;"</pre>
+        <p>Klíč je poslední část odkazu na správu (<code>/e/<b>klíč</b></code>). Zvláštní API klíč není potřeba.</p>
+        <h3>Vlastní server</h3>
+        <pre class="cmd">claude mcp add fckscrn -e FCKSCRN_URL=http://localhost:8080 -e FCKSCRN_EVENT=&lt;odkaz na správu&gt; -- node mcp/fckscrn-mcp.mjs</pre>
+        <h3>Co jde říct</h3>
+        <ul class="examples">
+          <li>„Založ akci Brno Meetup na 14. 11., jeden sál.“</li>
+          <li>„Přidej přednášku Jany Dvořákové Úvod v 18:00 na 10 minut.“</li>
+          <li>„Pak Martin Kolář, AI v podpoře.“ (čas se napojí sám)</li>
+          <li>„Dej po něm přestávku na kafe, 15 minut.“</li>
+          <li>„Prodluž Koláře na 30 minut a přesuň ho do Workshopu.“</li>
+          <li>„Komu ještě chybí prezentace? Pošli mi jejich odkazy.“</li>
+        </ul>
+        <table>
+          <tr><th>Nástroj</th><th>Co dělá</th></tr>
+          <tr><td><code>create_event</code></td><td>založí akci (jeden sál / víc sálů)</td></tr>
+          <tr><td><code>use_event</code></td><td>přepne na akci podle odkazu na správu</td></tr>
+          <tr><td><code>get_program</code></td><td>vypíše program po sálech</td></tr>
+          <tr><td><code>add_talk</code>, <code>add_break</code></td><td>přidá přednášku / přestávku</td></tr>
+          <tr><td><code>update_talk</code>, <code>delete_talk</code></td><td>upraví / smaže položku (podle #id, názvu nebo řečníka)</td></tr>
+          <tr><td><code>add_room</code>, <code>rename_room</code></td><td>sály</td></tr>
+          <tr><td><code>speaker_links</code></td><td>odkazy pro řečníky (i jen chybějící)</td></tr>
+          <tr><td><code>event_status</code></td><td>přehled: nahráno, ke kontrole, sály, aktivace</td></tr>
+        </table>
+      </section>
+
+      <section id="api">
+        <h2>API</h2>
+        <p>Všechno, co umí správa akce, umí i REST API (JSON). Přístup řídí tajné tokeny v adrese, stejné jako v odkazech:</p>
+        <table>
+          <tr><th>Token</th><th>Kde ho najdete</th><th>Co dovolí</th></tr>
+          <tr><td><code>adminToken</code></td><td>odkaz na správu <code>/e/…</code></td><td>celou akci</td></tr>
+          <tr><td><code>speakerToken</code></td><td>odkaz řečníka <code>/s/…</code></td><td>jen nahrání vlastní prezentace</td></tr>
+          <tr><td><code>playerToken</code></td><td>odkaz sálu <code>/p/…</code></td><td>jen čtení programu a souborů sálu</td></tr>
+        </table>
+        <div class="api">
+          <p><span>POST</span> <code>/api/events</code> založit akci <code>{ name, date?, place?, mode: "single"|"multi", rooms?: [] }</code> → <code>{ adminToken }</code></p>
+          <p><span>GET</span> <code>/api/admin/:adminToken</code> celá akce: event, rooms, talks, media, billing</p>
+          <p><span>PATCH</span> <code>/api/admin/:adminToken</code> <code>{ name?, date?, place?, mode? }</code></p>
+          <p><span>POST</span> <code>/api/admin/:adminToken/rooms</code> <code>{ name }</code> · <span>PATCH</span>/<span>DELETE</span> <code>…/rooms/:id</code></p>
+          <p><span>POST</span> <code>/api/admin/:adminToken/talks</code> <code>{ title, speaker?, startsAt: "HH:MM", durationMin, roomId, kind?: "talk"|"break" }</code></p>
+          <p><span>PATCH</span>/<span>DELETE</span> <code>/api/admin/:adminToken/talks/:id</code></p>
+          <p><span>GET</span> <code>/api/admin/:adminToken/talks/:id/preview</code> poznámky a odkazy na PDF a originál</p>
+          <p><span>PUT</span> <code>/api/admin/:adminToken/media?name=logo.png&amp;roomId=</code> tělo = soubor (smyčka partnerů)</p>
+          <p><span>POST</span> <code>/api/admin/:adminToken/import</code> program z tabulky <code>{ rows: [{ startsAt, durationMin?, title, speaker?, room?, kind? }], roomId? }</code></p>
+          <p><span>POST</span> <code>/api/admin/:adminToken/rooms/:id/shift</code> posun programu <code>{ afterTalkId, minutes }</code> · <span>POST</span> <code>…/rooms/:id/message</code> <code>{ text }</code> zpráva řečníkovi</p>
+          <p><span>GET</span>/<span>POST</span> <code>/api/admin/:adminToken/talks/:id/polls</code> hlasování <code>{ question, options?: "A\nB" }</code> · <span>PATCH</span> <code>…/polls/:id</code> <code>{ open }</code></p>
+          <p><span>GET</span> <code>/api/admin/:adminToken/export</code> ZIP se vším</p>
+          <p><span>POST</span> <code>/api/admin/:adminToken/rotate</code> nový tajný odkaz → <code>{ adminToken }</code></p>
+          <p><span>DELETE</span> <code>/api/admin/:adminToken</code> smazat akci</p>
+          <p><span>GET</span> <code>/api/speaker/:speakerToken</code> · <span>PUT</span> <code>/api/speaker/:speakerToken/file?name=talk.pptx</code> tělo = soubor</p>
+          <p><span>GET</span> <code>/api/player/:playerToken</code> program sálu, poznámky, odkazy na soubory, smyčka</p>
+          <p><span>POST</span> <code>/mcp</code> MCP (Streamable HTTP), hlavička <code>Authorization: Bearer &lt;adminToken&gt;</code></p>
+        </div>
+        <pre class="cmd">curl -X POST https://fckscrn.com/api/admin/&lt;adminToken&gt;/talks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Úvod","speaker":"Jana","startsAt":"18:00","durationMin":10,"roomId":1}'</pre>
+        <p>Chyby vrací <code>{ "error": "česká zpráva" }</code> se stavovým kódem 400, 404 nebo 409.</p>
+      </section>
+
+      <section id="server">
+        <h2>Vlastní server</h2>
+        <p>FckScrn je open source (AGPL-3.0). Na vlastním počítači nebo serveru běží zdarma, bez plateb a bez vodoznaku. Návod je v souborech <code>INSTALL.md</code> a <code>DEPLOY.md</code> v repozitáři na <a href="https://github.com/fckscrn/fckscrn" rel="noopener">GitHubu</a>. Nejrychlejší cesta: otevřete repozitář v Claude Code nebo Codexu a napište „Nainstaluj a spusť FckScrn podle INSTALL.md“.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="credit">FckScrn je open source · vytvořil <b>Tomáš Foltas</b>, autor <a href="https://domee.app" rel="noopener">Domee.app</a> – aplikace pro správu nemovitostí</footer>
+</body>
+</html>

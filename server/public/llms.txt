@@ -1,0 +1,45 @@
+# FckScrn
+
+> FckScrn is an open-source (AGPL-3.0) tool that makes presentations at conferences, meetups and company events just work. Speakers upload their slides via a personal link; the computer in each room downloads everything in advance and starts every talk in one click on the right screens: slides on the projector, notes, next slide and a countdown on the speaker monitor. Made by Tomáš Foltas (Czech Republic). Czech and English.
+
+Tagline: because "sorry, it doesn't work" is not an option.
+
+## What it does
+
+- Organizer creates an event without registration (secret admin link), one room or several, and builds the programme: talks, breaks, panel discussions.
+- Each speaker gets a personal upload link. Accepted: PowerPoint (.pptx), Keynote (.key), PDF, OpenDocument (.odp), Google Slides link. The server converts to PDF, reads speaker notes from PowerPoint, checks aspect ratio and embedded videos. Notes for Keynote/PDF can be typed per slide in the preview.
+- Room player runs in Chrome or Edge (no install) or as a desktop app (macOS, Windows) that can also run the original PowerPoint/Keynote. Works offline once synced.
+- Partner (sponsor) loop with photos and videos during breaks, with a "Next: …" bar.
+- Audience Q&A replaces Slido: a QR code on the projection, questions from phones without sign-up, voting, questions on the speaker monitor and optionally on the big screen.
+- Panel discussions: slide with topic, moderator and panelists, or a custom background.
+- Programme import by pasting a table from Excel / Google Sheets; one-click shift when a room runs late.
+- Live polls (multiple choice or word cloud) via the same QR code as questions.
+- "Help" button on the speaker's phone alerts the room technician.
+- Public "Now / Next" page and door signs for TVs next to rooms.
+- Upload deadline with ready-to-send reminders for speakers who haven't uploaded.
+- Messages to the speaker monitor ("5 minutes left") from the technician or the organizer.
+- Phone as speaker monitor and clicker: scan a QR code, see notes, timer and current / previous / next slide, change slides; on the last slide put audience questions on the screen and tick them off.
+- Speaker monitor focused on the speaker's own notes (they scale to always fit), countdown and slides; audience questions only appear when they are put on the screen (Q&A at the end) and can be ticked off or brought back.
+- Laptop + projector only: the laptop window is both the room control and the speaker monitor.
+- Videos embedded in PowerPoint play on the slide in PDF mode, offline, starting automatically or on click as set in PowerPoint; sound goes to the projector (HDMI) or a chosen audio output. YouTube/Vimeo play when online.
+- Public event page after the event with the slides speakers agreed to share.
+- After the event: download everything as a ZIP; the event deletes itself 14 days after its date.
+- Control via AI assistants over MCP (Claude, ChatGPT or any MCP client; connect to /mcp/<admin key> or to /mcp with the key as a Bearer token) and a REST API.
+
+## Pricing
+
+- Open source, self-hosted: free.
+- Online, one room: 1 490 CZK / €59 per event.
+- Online, several rooms (up to 5): 4 990 CZK / €199 per event.
+- One-off payment per event, no subscription. Invoices for Czech companies by IČO.
+
+## Links
+
+- [Product page (Czech)](%ORIGIN%/)
+- [Product page (English)](%ORIGIN%/en)
+- [Help (Czech)](%ORIGIN%/napoveda)
+- [Help (English)](%ORIGIN%/en/help): quick start, speakers, rooms, Q&A, MCP, API, self-hosting
+- [Create an event](%ORIGIN%/nova-akce)
+- [Source code on GitHub](https://github.com/fckscrn/fckscrn)
+- [Facebook](https://www.facebook.com/FckScrn)
+- [Instagram](https://www.instagram.com/fckscrn/)

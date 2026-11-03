@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>Založit akci · FckScrn</title>
+  <meta name="description" content="Založte akci za pár minut: program, sály a odkazy pro řečníky. Bez registrace.">
+  <link rel="canonical" href="%ORIGIN%/nova-akce">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FckScrn">
+  <meta property="og:locale" content="cs_CZ">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:url" content="%ORIGIN%/nova-akce">
+  <meta property="og:title" content="Založit akci · FckScrn">
+  <meta property="og:description" content="Založte akci za pár minut: program, sály a odkazy pro řečníky. Bez registrace.">
+  <meta property="og:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FckScrn – prezentace na akcích, které prostě fungují">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Založit akci · FckScrn">
+  <meta name="twitter:description" content="Založte akci za pár minut: program, sály a odkazy pro řečníky. Bez registrace.">
+  <meta name="twitter:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/">Fck<span class="scrn">Scrn</span></a><span class="muted">because „sorry, it doesn't work" is not an option</span></header>
+  <main class="narrow onboarding">
+    <ol class="dots" aria-label="Postup" data-en-label="Steps">
+      <li id="dot-1" class="on"><button type="button" data-go="1" data-en="Type">Typ akce</button></li>
+      <li id="dot-2"><button type="button" data-go="2" data-en="Event">Akce</button></li>
+      <li id="dot-3"><button type="button" data-go="3" data-en="Done">Hotovo</button></li>
+    </ol>
+
+    <!-- 1 -->
+    <section id="step-1">
+      <h1 data-en="How big is your event?">Jak velkou akci chystáte?</h1>
+      <p class="sub" data-en="We'll set up the admin accordingly. If it grows, you can add rooms later.">Podle toho vám nachystáme správu. Kdyby to přerostlo, sály půjdou přidat i později.</p>
+      <div class="choices">
+        <button type="button" class="choice" data-mode="single">
+          <b data-en="One room">Jeden sál</b>
+          <span data-en="Meetup, workshop, small conference. One projector, one programme, no switching. The quickest way.">Meetup, workshop, minikonference. Jeden projektor, jeden program, žádné přepínání. Nejrychlejší cesta.</span>
+        </button>
+        <button type="button" class="choice" data-mode="multi">
+          <b data-en="Several rooms">Víc sálů</b>
+          <span data-en="A conference with parallel tracks. Each room has its own programme and its own computer at the projector.">Konference s paralelními bloky. Každý sál má vlastní program a vlastní počítač u projektoru.</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <form id="step-2" class="stack" hidden>
+      <h1 data-en="What's the event called?">Jak se akce jmenuje?</h1>
+      <p class="sub" id="mode-note"></p>
+      <label class="field"><span data-en="Event name">Název akce</span><input id="name" name="name" required placeholder="Product Day Brno 2026"></label>
+      <div class="row">
+        <label class="field"><span data-en="Date">Datum</span><input id="date" name="date" type="date"></label>
+        <label class="field grow"><span data-en="Venue">Místo</span><input id="place" name="place" placeholder="Hotel Passage, Brno" data-en-placeholder="Conference centre, Prague"></label>
+      </div>
+      <fieldset class="field rooms-field" id="rooms-field" hidden>
+        <legend data-en="Rooms">Sály</legend>
+        <div id="room-list"></div>
+        <button type="button" class="btn small" id="add-room" data-en="+ Add room">+ Přidat sál</button>
+      </fieldset>
+      <p class="error" id="err" hidden></p>
+      <div class="row"><button class="btn primary big" type="submit" data-en="Create event">Vytvořit akci</button><button class="btn ghost" type="button" id="back" data-en="Back">Zpět</button></div>
+    </form>
+
+    <!-- 3 -->
+    <section id="step-3" hidden>
+      <h1 data-en="Done. This is the key to your event.">Hotovo. Tohle je klíč k vaší akci.</h1>
+      <p class="sub" data-en="No password, no sign-up. Whoever has this link can manage the event, so save it and don't share it.">Žádné heslo ani registrace. Kdo má tenhle odkaz, může akci spravovat, takže si ho uložte a nikomu neposílejte.</p>
+      <div class="pair"><code id="admin-url"></code>
+        <div class="row"><button class="btn small primary" id="copy" data-en="Copy link">Zkopírovat odkaz</button></div></div>
+      <ul class="next">
+        <li data-en="<b>Add the programme.</b> Talks and breaks; start times fill in by themselves."><b>Přidáte program.</b> Přednášky a přestávky, časy se doplňují samy.</li>
+        <li data-en="<b>Send speakers their links.</b> Each uploads their own slides and sees a preview right away."><b>Rozešlete odkazy řečníkům.</b> Každý si nahraje prezentaci sám a hned vidí náhled.</li>
+        <li id="day-of"></li>
+      </ul>
+      <a class="btn primary big" id="go" data-en="Continue to the programme">Pokračovat na program</a>
+    </section>
+  </main>
+  <footer class="credit" data-en="<a href=&quot;/en/help&quot;>Help</a> · FckScrn is open source · made by <b>Tomáš Foltas</b>, creator of <a href=&quot;https://domee.app&quot; rel=&quot;noopener&quot;>Domee.app</a> – a property management app"><a href="/napoveda">Nápověda</a> · FckScrn je open source · vytvořil <b>Tomáš Foltas</b>, autor <a href="https://domee.app" rel="noopener">Domee.app</a> – aplikace pro správu nemovitostí</footer>
+  <script type="module">
+    import { $, api, copy } from "/assets/common.js";
+    import { lang, t, langSwitch, translateStatic } from "/assets/i18n.js";
+    const roomWord = () => t({ cs: "Sál", en: "Room" });
+    function localize() {
+      translateStatic();
+      // default room names follow the language until someone renames them
+      document.querySelectorAll("#room-list input").forEach(i => { i.value = i.value.replace(/^(Sál|Room) (?=[A-Z0-9]+$)/, roomWord() + " "); });
+      if (mode) setModeNote();
+      $("#day-of").innerHTML = t({
+        cs: `<b>V den akce</b> otevřete odkaz ${mode === "single" ? "projekce" : "každého sálu"} v Chrome na počítači u projektoru. Nic se neinstaluje.`,
+        en: `<b>On the day</b> open the ${mode === "single" ? "projection" : "room"} link in Chrome on the computer at the projector. Nothing to install.`,
+      });
+    }
+    function setModeNote() {
+      $("#mode-note").textContent = mode === "single"
+        ? t({ cs: "Jeden sál. Správa bude co nejjednodušší, sály vás nebudou zdržovat.", en: "One room. The admin stays as simple as possible, no rooms to deal with." })
+        : t({ cs: "Víc sálů. Názvy sálů můžete kdykoli změnit.", en: "Several rooms. You can rename rooms any time." });
+    }
+    let mode = null, current = 1, created = false;
+    // room name inputs: two by default, more with "+", extra ones can be removed
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    function roomRow(i) {
+      const row = document.createElement("div");
+      row.className = "room-row";
+      const n = $("#room-list").children.length; // name by position, so removing one doesn't leave gaps
+      row.innerHTML = `<input name="room" id="room-${i}" value="${roomWord()} ${letters[n] || n + 1}" aria-label="${t({ cs: "Název sálu", en: "Room name" })} ${n + 1}">` +
+        (n >= 2 ? `<button type="button" class="btn small ghost" aria-label="${t({ cs: "Odebrat sál", en: "Remove room" })}">✕</button>` : "");
+      row.querySelector("button")?.addEventListener("click", () => row.remove());
+      return row;
+    }
+    let roomCount = 0;
+    const addRoom = () => { const r = roomRow(roomCount++); $("#room-list").append(r); return r; };
+    addRoom(); addRoom();
+    $("#add-room").onclick = () => { const r = addRoom(); const inp = r.querySelector("input"); inp.focus(); inp.select(); };
+    // steps: going back works from the step bar and the browser's Back button; after the event exists, no way back
+    const canGo = i => !created && i < current || (!created && i === 2 && mode && current === 1);
+    const step = (n, push = true) => {
+      current = n;
+      for (const i of [1, 2, 3]) {
+        $(`#step-${i}`).hidden = i !== n;
+        $(`#dot-${i}`).className = i <= n ? "on" : "";
+        const b = $(`#dot-${i} button`);
+        b.disabled = !canGo(i);
+        b.setAttribute("aria-current", i === n ? "step" : "false");
+      }
+      if (push) history.pushState({ step: n }, "", n === 1 ? location.pathname : `#krok-${n}`);
+      scrollTo(0, 0);
+    };
+    history.replaceState({ step: 1 }, "", location.pathname);
+    addEventListener("popstate", e => { if (!created) step(e.state?.step || 1, false); });
+    document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => {
+      const n = +b.dataset.go;
+      if (canGo(n)) n < current ? history.back() : step(n);
+    });
+    step(1, false);
+    langSwitch(localize);
+    localize();
+    document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => {
+      mode = b.dataset.mode;
+      $("#rooms-field").hidden = mode !== "multi";
+      setModeNote();
+      localize();
+      step(2);
+      $("#name").focus();
+    });
+    $("#back").onclick = () => history.back();
+    $("#step-2").addEventListener("submit", async e => {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(e.target));
+      try {
+        const { adminToken } = await api("POST", "/api/events", {
+          ...f, mode, rooms: mode === "multi" ? [...document.querySelectorAll("#room-list input")].map(i => i.value) : [roomWord()],
+        });
+        const url = `${location.origin}/e/${adminToken}`;
+        $("#admin-url").textContent = url;
+        $("#go").href = `/e/${adminToken}`;
+        localize();
+        $("#copy").onclick = () => copy(url, t({ cs: "Odkaz zkopírován. Uložte si ho třeba do kalendáře k akci.", en: "Link copied. Save it, e.g. in your calendar entry for the event." }));
+        created = true;
+        step(3);
+      } catch (err) { $("#err").textContent = err.message; $("#err").hidden = false; }
+    });
+  </script>
+</body>
+</html>

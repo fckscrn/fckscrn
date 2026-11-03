@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#000000">
+  <title>Monitor řečníka · FckScrn</title>
+  <link rel="stylesheet" href="/assets/remote.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="rtop"><span class="brand">Fck<span class="scrn">Scrn</span></span><span id="room"></span><span class="conn" id="conn"></span><button class="helpbtn" id="help">Pomoc</button></header>
+  <div class="rmsg" id="rmsg" hidden role="alert"></div>
+  <main id="app"><p class="dim">…</p></main>
+  <nav class="clicker" id="clicker">
+    <button id="prev" aria-label="Předchozí slide">←</button>
+    <button id="next" class="go" aria-label="Další slide">Další →</button>
+  </nav>
+  <script type="module" src="/assets/remote.js"></script>
+</body>
+</html>

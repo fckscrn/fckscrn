@@ -1,0 +1,20 @@
+{
+  "name": "@fckscrn/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "author": "Tomáš Foltas",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local src/index.js",
+    "dev": "node --env-file-if-exists=.env.local --watch src/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "pdfjs-dist": "6.3.289",
+    "qrcode-generator": "2.0.4"
+  }
+}

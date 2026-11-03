@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' fck:; script-src 'self' fck:; style-src 'self' fck: 'unsafe-inline'; img-src 'self' fck: data: blob:; media-src 'self' fck: blob:; worker-src 'self' fck: blob:">
+  <title>FckScrn Player</title>
+  <link rel="stylesheet" href="player.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header class="top">
+    <span class="brand">Fck<span class="scrn">Scrn</span></span><span class="muted" id="where"></span>
+    <div class="sync" id="sync"></div>
+  </header>
+  <div id="app"></div>
+  <script type="module" src="control.js"></script>
+</body>
+</html>

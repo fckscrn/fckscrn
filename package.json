@@ -1,0 +1,16 @@
+{
+  "name": "fckscrn",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "author": "Tomáš Foltas",
+  "workspaces": [
+    "server",
+    "player"
+  ],
+  "scripts": {
+    "server": "npm run dev -w server",
+    "player": "npm start -w player",
+    "test": "npm test -w server && npm test -w player && node --test mcp/*.test.mjs",
+    "mcp": "node mcp/fckscrn-mcp.mjs"
+  }
+}

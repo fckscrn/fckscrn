@@ -1,0 +1,19 @@
+{
+  "name": "@fckscrn/player",
+  "productName": "fckscrn Player",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "author": "Tomáš Foltas",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "pdfjs-dist": "6.3.289"
+  },
+  "devDependencies": {
+    "electron": "44.5.0"
+  }
+}

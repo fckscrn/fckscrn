@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer">
+  <title>Projekce</title>
+  <link rel="stylesheet" href="/player/player.css">
+</head>
+<body class="out">
+  <div class="full" id="slide"><canvas id="c"></canvas><div class="vids" id="vids"></div></div>
+  <div class="loop" id="loop" hidden></div>
+  <div class="loopbar" id="bar" hidden></div>
+  <div class="panel" id="panel" hidden><div class="panelbg" id="panelbg"></div><div class="panelcard" id="panelcard"></div></div>
+  <div class="qa" id="qa" hidden><div class="qaqr" id="qaqr"></div><div class="qatext" id="qatext"></div></div>
+  <div class="qalist" id="qalist" hidden></div>
+  <div class="wm" id="wm" hidden aria-hidden="true"><span id="wmtext">ZKUŠEBNÍ REŽIM · FckScrn</span></div>
+  <div class="full" id="standby" hidden><div class="standby"><div class="ev" id="ev"></div><div class="ti" id="ti"></div><div class="sp" id="sp"></div></div></div>
+  <script type="module" src="/player/web-shim.js"></script>
+  <script type="module" src="/player/projection.js"></script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>FckScrn – prezentace na akcích, které prostě fungují</title>
+  <meta name="description" content="Řečník nahraje prezentaci přes odkaz, počítač v sále ji jedním kliknutím spustí na správných obrazovkách. Open source, bez instalace.">
+  <link rel="canonical" href="%ORIGIN%/">
+  <link rel="alternate" hreflang="cs" href="%ORIGIN%/">
+  <link rel="alternate" hreflang="en" href="%ORIGIN%/en">
+  <link rel="alternate" hreflang="x-default" href="%ORIGIN%/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FckScrn">
+  <meta property="og:locale" content="cs_CZ">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:url" content="%ORIGIN%/">
+  <meta property="og:title" content="FckScrn – prezentace na akcích, které prostě fungují">
+  <meta property="og:description" content="Řečník nahraje prezentaci přes odkaz, počítač v sále ji jedním kliknutím spustí na správných obrazovkách. Open source, bez instalace.">
+  <meta property="og:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FckScrn – prezentace na akcích, které prostě fungují">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FckScrn – prezentace na akcích, které prostě fungují">
+  <meta name="twitter:description" content="Řečník nahraje prezentaci přes odkaz, počítač v sále ji jedním kliknutím spustí na správných obrazovkách. Open source, bez instalace.">
+  <meta name="twitter:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "SoftwareApplication",
+   "@id": "%ORIGIN%/#app",
+   "name": "FckScrn",
+   "url": "%ORIGIN%/",
+   "description": "Open-source nástroj pro konference a meetupy: řečníci nahrají prezentace přes odkaz, počítač v sále je stáhne dopředu a spustí na správných obrazovkách (projekce, monitor řečníka s poznámkami a odpočtem). Funguje offline, bez instalace, s dotazy z publika přes QR kód.",
+   "applicationCategory": "BusinessApplication",
+   "applicationSubCategory": "Event presentation management",
+   "operatingSystem": "Web (Chrome, Edge), macOS, Windows",
+   "inLanguage": [
+    "cs",
+    "en"
+   ],
+   "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+   "isAccessibleForFree": true,
+   "codeRepository": "https://github.com/fckscrn/fckscrn",
+   "sameAs": [
+    "https://github.com/fckscrn/fckscrn",
+    "https://www.facebook.com/FckScrn",
+    "https://www.instagram.com/fckscrn/"
+   ],
+   "author": {
+    "@type": "Person",
+    "name": "Tomáš Foltas",
+    "url": "https://domee.app"
+   },
+   "creator": {
+    "@type": "Person",
+    "name": "Tomáš Foltas",
+    "url": "https://domee.app"
+   },
+   "image": "%ORIGIN%/assets/logo/og-cs.png",
+   "offers": [
+    {
+     "@type": "Offer",
+     "name": "Open source (self-hosted)",
+     "price": "0",
+     "priceCurrency": "CZK"
+    },
+    {
+     "@type": "Offer",
+     "name": "Online · jeden sál",
+     "price": "1490",
+     "priceCurrency": "CZK",
+     "description": "Cena za jednu akci"
+    },
+    {
+     "@type": "Offer",
+     "name": "Online · víc sálů",
+     "price": "4990",
+     "priceCurrency": "CZK",
+     "description": "Cena za jednu akci, až 5 sálů"
+    }
+   ],
+   "featureList": [
+    "Nahrávání prezentací řečníky přes odkaz (PowerPoint, Keynote, PDF, Google Slides)",
+    "Projekce a monitor řečníka s poznámkami a odpočtem",
+    "Telefon řečníka jako monitor a klikr",
+    "Videa z PowerPointu i offline, výběr zvukového výstupu",
+    "Cedulka u dveří s Teď / Další",
+    "Funguje offline",
+    "Smyčka partnerů o přestávkách",
+    "Dotazy z publika s hlasováním přes QR kód",
+    "Panelové diskuse",
+    "Náhled slidů a poznámek pro organizátora",
+    "Ovládání přes AI asistenty (MCP: Claude, ChatGPT a další) a REST API"
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "%ORIGIN%/#site",
+   "url": "%ORIGIN%/",
+   "name": "FckScrn",
+   "inLanguage": "cs"
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Co je FckScrn?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Open-source nástroj pro konference, meetupy a firemní akce. Organizátor poskládá program, řečníci nahrají prezentace přes vlastní odkaz a počítač v sále je stáhne dopředu. Každou přednášku pak spustí jedním kliknutím na správných obrazovkách: slidy na projektor, poznámky a odpočet na monitor řečníka."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Musím na počítač v sále něco instalovat?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ne. Otevřete odkaz sálu v Chrome nebo Edge a povolíte obrazovky. Projekce se přepne na celou obrazovku jedním stiskem klávesy a pak běží sama, dokud okno nezavřete. Kdo chce víc jistoty, použije desktopovou aplikaci."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Co když v sále vypadne internet?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Nic se nestane. Prezentace i smyčka partnerů se stáhnou dopředu do prohlížeče a přehrávají se z něj."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Funguje to s PowerPointem a Keynote?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ano. Řečník nahraje PowerPoint, Keynote, PDF nebo OpenOffice. V prohlížeči se přehrává PDF verze. Desktopová aplikace umí spustit i originál, třeba kvůli animacím."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Potřebuju na dotazy z publika Slido?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ne. Každá přednáška a panel má vlastní QR kód v rohu projekce. Diváci se ptají z telefonu bez registrace a hlasují pro dotazy, které je zajímají. Řečníka během přednášky neruší, na konci je technik jedním tlačítkem pošle na plátno."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Kolik to stojí?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Open-source verze je zdarma na vlastním počítači nebo serveru. Online verze stojí 1 490 Kč za akci s jedním sálem a 4 990 Kč za akci s až pěti sály. Platí se jednou za akci, žádné předplatné."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Co se děje s daty?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Akce se 14 dní po svém datu sama smaže i se všemi soubory. Předtím si můžete vše stáhnout v jednom ZIPu, nebo akci smazat hned."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Proč open source?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Protože prezentace na akcích by prostě měly fungovat. Kdo chce, provozuje si FckScrn sám a zdarma. Kdo nechce nic řešit, použije online verzi."
+     }
+    }
+   ]
+  }
+ ]
+}
+  </script>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/">Fck<span class="scrn">Scrn</span></a>
+    <nav class="lp-nav"><a href="#jak">Jak to funguje</a><a href="#cena">Cena</a><a href="#otazky">Otázky</a><a href="/napoveda">Nápověda</a></nav>
+    <a class="btn small primary nav-cta" href="/nova-akce">Založit akci</a>
+    <details class="langmenu"><summary aria-label="Jazyk / Language">CZ</summary><div><a href="/" hreflang="cs" lang="cs" aria-current="true">Čeština</a><a href="/en" hreflang="en" lang="en">English</a></div></details>
+  </header>
+
+  <main class="lp">
+    <!-- hero -->
+    <section class="hero">
+      <p class="claim" lang="en">because „sorry, it doesn't work"<br>is not an option</p>
+      <h1>Prezentace na akcích,<br>které prostě fungují.</h1>
+      <p class="lead">Řečník nahraje prezentaci přes odkaz. Počítač v sále si ji stáhne dopředu a jedním kliknutím spustí na správných obrazovkách: slidy pro publikum, poznámky a čas pro řečníka.</p>
+      <div class="cta">
+        <a class="btn primary big" href="/nova-akce">Založit akci</a>
+        <a class="btn big" href="https://github.com/fckscrn/fckscrn" rel="noopener">Open source na GitHubu</a>
+      </div>
+      <p class="fine">Bez registrace. V sále nic neinstalujete, stačí Chrome.</p>
+    </section>
+
+    <!-- screens -->
+    <section class="screens-demo" aria-label="Ukázka: projekce a monitor řečníka">
+      <figure>
+        <div class="screen proj"><div class="slide-demo"><span>Product Day Brno</span><b>Co zabralo</b><i>Psaná rozhodnutí, async týdenní update</i></div></div>
+        <figcaption>Projekce: jen slide. Žádná plocha, žádné okno PowerPointu.</figcaption>
+      </figure>
+      <figure>
+        <div class="screen spk">
+          <div class="spk-grid">
+            <div class="spk-side"><small>Zbývá z 20 min</small><strong>12:40</strong><div class="slide-demo mini"><b>Co zabralo</b></div>
+              <div class="spk-pn"><div class="slide-demo mini dim"><b>Kontext</b></div><div class="slide-demo mini dim"><b>Čísla</b></div></div></div>
+            <div class="spk-notes"><small>Teď · 4 / 6</small><p>Tohle je jádro talku.<br>Ukázat šablonu rozhodnutí,<br>pak příklad z praxe.</p></div>
+          </div>
+        </div>
+        <figcaption>Monitor řečníka: velké vlastní poznámky, odpočet, aktuální, předchozí a další slide. Dotazy z publika až na konci.</figcaption>
+      </figure>
+    </section>
+
+    <!-- story -->
+    <section class="story">
+      <blockquote>„Sorry, ono to nefunguje.“</blockquote>
+      <div>
+        <h2>Proč to vzniklo</h2>
+        <p>Mluvil jsem na řadě konferencí. Všude slibovali, že je všechno připravené a že pro řečníky dělají maximum. Pak jsem přišel na pódium a slyšel tuhle větu. Prezentace se nenačetla, presenter view skončil na projektoru, poznámky nikde.</p>
+        <p>Nejde o techniku, jde o to, že to nikdo nemá vyřešené od začátku do konce. FckScrn je odpověď na tu větu.</p>
+        <p class="sign">Tomáš Foltas</p>
+      </div>
+    </section>
+
+    <!-- how -->
+    <section id="jak">
+      <h2 class="sec">Jak to funguje</h2>
+      <ol class="how">
+        <li><b>Založíte akci</b><span>Jeden sál, nebo víc. Program poskládáte za pár minut, časy se doplňují samy.</span></li>
+        <li><b>Řečníci nahrají prezentace</b><span>Každý dostane vlastní odkaz. Nahraje PowerPoint, Keynote nebo PDF a hned vidí, jak to bude vypadat. Kontrolujeme formát, videa i poznámky.</span></li>
+        <li><b>V sále jedno kliknutí</b><span>Na počítači u projektoru otevřete odkaz sálu v Chrome. Přednášky spouštíte tlačítkem, klikr funguje, o přestávkách běží smyčka partnerů.</span></li>
+      </ol>
+    </section>
+
+    <!-- features -->
+    <section>
+      <h2 class="sec">Co to umí</h2>
+      <ul class="feats">
+        <li><b>Správné obrazovky</b>Projekce na projektor, poznámky na monitor řečníka. Máte jen notebook a projektor? Ovládání i poznámky budou v jednom okně.</li>
+        <li><b>Telefon jako monitor a klikr</b>Řečník naskenuje QR kód: na telefonu má poznámky, čas a slidy a velkými tlačítky přepíná. Tlačítko Pomoc přivolá technika.</li>
+        <li><b>Videa a zvuk</b>Videa z PowerPointu hrají přímo na slidu, i bez internetu. Zvuk jde do projektoru přes HDMI nebo do zvukovky, kterou vyberete.</li>
+        <li><b>Funguje bez internetu</b>Všechno se stáhne dopředu. Když vypadne wifi, přednáška jede dál.</li>
+        <li><b>Náhled pro organizátora</b>Každý slide vedle poznámek řečníka. Víte, co přijde, dřív než to uvidí sál.</li>
+        <li><b>Smyčka partnerů</b>Fotky a videa partnerů o přestávkách a mezi přednáškami, s lištou „Další: …“.</li>
+        <li><b>Cedulka u dveří</b>Na televizi u sálu běží „Teď / Další“ podle toho, co se v sále opravdu děje. Pozadí si nahrajete vlastní.</li>
+        <li><b>Program z Excelu</b>Tabulku z Excelu nebo Google Sheets vložíte a program je hotový. Když sál nabere zpoždění, posunete ho jedním klikem.</li>
+        <li><b>Dotazy a hlasování</b>QR kód na plátně, diváci se ptají a hlasují z telefonu, výsledky živě na plátně. Bez Slida a bez registrace.</li>
+        <li><b>Panelové diskuse</b>Slide s tématem, moderátorem a panelisty, nebo vlastní pozadí. Dotazy z publika i tady.</li>
+        <li><b>Ovládání přes AI</b>Program nadiktujete AI asistentovi (Claude, ChatGPT nebo jinému s podporou MCP) a zeptáte se ho, kdo ještě nenahrál prezentaci. MCP server a REST API jsou součástí.</li>
+        <li><b>Po akci se uklidí</b>Stáhnete si všechno v jednom ZIPu, pak se akce sama smaže. Žádná data navíc.</li>
+      </ul>
+    </section>
+
+    <!-- pricing -->
+    <section id="cena">
+      <h2 class="sec">Cena</h2>
+      <div class="prices">
+        <div class="price main">
+          <h3>Online · jeden sál</h3>
+          <p class="amount"><span data-price="single">1 490 Kč</span><small> / akce</small></p>
+          <p>Meetup, workshop, minikonference. Jeden program, jeden projektor. Nic neinstalujete.</p>
+          <a class="btn primary" href="/nova-akce">Založit akci</a>
+        </div>
+        <div class="price">
+          <h3>Online · víc sálů</h3>
+          <p class="amount"><span data-price="multi">4 990 Kč</span><small> / akce</small></p>
+          <p>Konference s paralelními bloky, až 5 sálů. Každý sál má vlastní program a vlastní počítač.</p>
+          <a class="btn primary" href="/nova-akce">Založit akci</a>
+        </div>
+        <div class="price oss">
+          <h3>Open source</h3>
+          <p class="amount">Zdarma</p>
+          <p>Na vlastním počítači nebo serveru. Stáhnete z GitHubu a nainstalujete podle návodu, nebo to necháte udělat Claude Code či Codex.</p>
+          <a class="btn" href="https://github.com/fckscrn/fckscrn" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <p class="fine">Platby spouštíme brzy. Do té doby si FckScrn online vyzkoušíte zdarma.</p>
+    </section>
+
+    <!-- faq -->
+    <section id="otazky">
+      <h2 class="sec">Časté otázky</h2>
+      <div class="faq">
+        <details><summary>Co je FckScrn?</summary><p>Open-source nástroj pro konference, meetupy a firemní akce. Organizátor poskládá program, řečníci nahrají prezentace přes vlastní odkaz a počítač v sále je stáhne dopředu. Každou přednášku pak spustí jedním kliknutím na správných obrazovkách: slidy na projektor, poznámky a odpočet na monitor řečníka.</p></details>
+        <details><summary>Musím na počítač v sále něco instalovat?</summary><p>Ne. Otevřete odkaz sálu v Chrome nebo Edge a povolíte obrazovky. Projekce se přepne na celou obrazovku jedním stiskem klávesy a pak běží sama, dokud okno nezavřete. Kdo chce víc jistoty, použije desktopovou aplikaci.</p></details>
+        <details><summary>Co když v sále vypadne internet?</summary><p>Nic se nestane. Prezentace i smyčka partnerů se stáhnou dopředu do prohlížeče a přehrávají se z něj.</p></details>
+        <details><summary>Funguje to s PowerPointem a Keynote?</summary><p>Ano. Řečník nahraje PowerPoint, Keynote, PDF nebo OpenOffice. V prohlížeči se přehrává PDF verze. Desktopová aplikace umí spustit i originál, třeba kvůli animacím.</p></details>
+        <details><summary>Potřebuju na dotazy z publika Slido?</summary><p>Ne. Každá přednáška a panel má vlastní QR kód v rohu projekce. Diváci se ptají z telefonu bez registrace a hlasují pro dotazy, které je zajímají. Řečníka během přednášky neruší, na konci je technik jedním tlačítkem pošle na plátno.</p></details>
+        <details><summary>Kolik to stojí?</summary><p>Open-source verze je zdarma na vlastním počítači nebo serveru. Online verze stojí 1 490 Kč za akci s jedním sálem a 4 990 Kč za akci s až pěti sály. Platí se jednou za akci, žádné předplatné.</p></details>
+        <details><summary>Co se děje s daty?</summary><p>Akce se 14 dní po svém datu sama smaže i se všemi soubory. Předtím si můžete vše stáhnout v jednom ZIPu, nebo akci smazat hned.</p></details>
+        <details><summary>Proč open source?</summary><p>Protože prezentace na akcích by prostě měly fungovat. Kdo chce, provozuje si FckScrn sám a zdarma. Kdo nechce nic řešit, použije online verzi.</p></details>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2>Ať příští přednáška prostě začne.</h2>
+      <a class="btn primary big" href="/nova-akce">Založit akci</a>
+    </section>
+  </main>
+
+  <footer class="credit"><a href="/napoveda">Nápověda</a> · <a href="https://github.com/fckscrn/fckscrn" rel="noopener">GitHub</a> · <a href="https://www.facebook.com/FckScrn" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/fckscrn/" rel="noopener">Instagram</a> · <a href="/en" hreflang="en" lang="en">English</a> · FckScrn je open source · vytvořil <b>Tomáš Foltas</b>, autor <a href="https://domee.app" rel="noopener">Domee.app</a> – aplikace pro správu nemovitostí</footer>
+</body>
+</html>

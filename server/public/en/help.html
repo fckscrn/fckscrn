@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>Help · FckScrn</title>
+  <meta name="description" content="How to create an event, upload slides, run the projection in the room, control FckScrn with AI (Claude, ChatGPT) and use the API.">
+  <link rel="canonical" href="%ORIGIN%/en/help">
+  <link rel="alternate" hreflang="cs" href="%ORIGIN%/napoveda">
+  <link rel="alternate" hreflang="en" href="%ORIGIN%/en/help">
+  <link rel="alternate" hreflang="x-default" href="%ORIGIN%/napoveda">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FckScrn">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="cs_CZ">
+  <meta property="og:url" content="%ORIGIN%/en/help">
+  <meta property="og:title" content="Help · FckScrn">
+  <meta property="og:description" content="How to create an event, upload slides, run the projection in the room, control FckScrn with AI (Claude, ChatGPT) and use the API.">
+  <meta property="og:image" content="%ORIGIN%/assets/logo/og-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FckScrn – presentations at events that just work">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Help · FckScrn">
+  <meta name="twitter:description" content="How to create an event, upload slides, run the projection in the room, control FckScrn with AI (Claude, ChatGPT) and use the API.">
+  <meta name="twitter:image" content="%ORIGIN%/assets/logo/og-en.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+  {
+   "@type": "ListItem",
+   "position": 1,
+   "name": "FckScrn",
+   "item": "%ORIGIN%/en"
+  },
+  {
+   "@type": "ListItem",
+   "position": 2,
+   "name": "Help",
+   "item": "%ORIGIN%/en/help"
+  }
+ ]
+}
+  </script>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <link rel="stylesheet" href="/assets/help.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/en">Fck<span class="scrn">Scrn</span></a><span class="muted">help</span>
+    <nav class="lp-nav"><a href="/en">Home</a></nav>
+    <a class="btn small primary nav-cta" href="/nova-akce">Create an event</a>
+    <details class="langmenu"><summary aria-label="Jazyk / Language">EN</summary><div><a href="/napoveda" hreflang="cs" lang="cs">Čeština</a><a href="/en/help" hreflang="en" lang="en" aria-current="true">English</a></div></details>
+  </header>
+
+  <div class="help">
+    <nav class="toc" aria-label="Contents">
+      <a href="#start">Quick start</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#programme">Programme and rooms</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#room">In the room</a>
+      <a href="#qa">Questions and polls</a>
+      <a href="#loop">Partner loop</a>
+      <a href="#public">Event page</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#activation">Activation and payment</a>
+      <a href="#data">Data and security</a>
+      <a href="#claude">Claude and MCP</a>
+      <a href="#api">API</a>
+      <a href="#server">Self-hosting</a>
+    </nav>
+
+    <main class="doc">
+      <h1>Help</h1>
+      <p class="lead">Everything on one page. Organizer things first, technical things at the end.</p>
+
+      <section id="start">
+        <h2>Quick start</h2>
+        <ol>
+          <li><b>Create an event</b> at <a href="/nova-akce">fckscrn.com/nova-akce</a>. Pick one room or several. You get a <b>secret admin link</b>; save it. It's the only way into the event, there's no sign-up.</li>
+          <li><b>Add the programme.</b> Got it in Excel or Google Sheets? Copy the table and click <b>Paste programme from Excel</b>. Otherwise add talks with <b>+ Talk</b>.</li>
+          <li><b>Send speakers their links</b> (<b>Speaker link</b> button). Each uploads their own slides. Set a deadline and <b>Remind speakers</b> takes care of the rest.</li>
+          <li><b>On the day</b> open the room link in Chrome or Edge on the computer at the projector and start talks with one button.</li>
+        </ol>
+      </section>
+
+      <section id="checklist">
+        <h2>Checklist</h2>
+        <table>
+          <tr><th>When</th><th>What to do</th></tr>
+          <tr><td>2–3 weeks before</td><td>Create the event, add the programme, send speakers their links, set the <b>upload deadline</b>.</td></tr>
+          <tr><td>A week before</td><td><b>Remind speakers</b> who haven't uploaded. Go through the previews and click <b>Looks good</b>. Upload the partner loop.</td></tr>
+          <tr><td>The day before</td><td>Open the room link on each room computer and let it download everything. Try one talk on the projector (rehearsal). Turn on the <b>public event page</b> if you want it.</td></tr>
+          <tr><td>Morning</td><td>Start the room computers, open the room link, <b>Start projection</b> and press a key once on the projector. Open the door sign on the TV by each room.</td></tr>
+          <tr><td>During</td><td>Start talks with the button. If a room runs late, move the programme with one click. Watch for the <b>The speaker needs help</b> bar.</td></tr>
+          <tr><td>After</td><td>Download the ZIP. Send attendees the event page with the slides.</td></tr>
+        </table>
+      </section>
+
+      <section id="programme">
+        <h2>Programme and rooms</h2>
+        <ul>
+          <li><b>Programme from Excel:</b> select the table in Excel or Google Sheets, copy it (Cmd/Ctrl + C) and paste it into <b>Paste programme from Excel</b>. We recognise the columns (time, title, speaker, room, length), even without a header row, and show a preview first. Breaks and lunches are recognised by their name; times can be ranges like “9:15–9:45”.</li>
+          <li>By hand: <b>+ Talk</b>, <b>+ Break</b> or <b>+ Panel</b> next to the room. The start time follows the previous block.</li>
+          <li>Edit or delete any item right in the programme.</li>
+          <li>Switch a one-room event to several rooms below the programme. An import creates the rooms from the table by itself.</li>
+          <li><b>Running late:</b> the room control and the event admin show “You're 12 min behind”. <b>Move the rest</b> shifts everything that follows in that room. The room, door sign and event page pick up the new times automatically.</li>
+        </ul>
+      </section>
+
+      <section id="speakers">
+        <h2>Speakers</h2>
+        <ul>
+          <li>Each speaker has a personal link; <b>Speaker link</b> copies it.</li>
+          <li><b>Deadline and reminders:</b> set the <b>Upload deadline</b>. Speakers see it on their link and get a clear warning once it has passed. <b>Remind speakers</b> prepares a ready-to-send text with the link for everyone who hasn't uploaded; paste it into e-mail, WhatsApp or Slack.</li>
+          <li>Formats: <b>PowerPoint (.pptx)</b>, <b>Keynote (.key)</b>, <b>PDF</b>, OpenOffice (.odp), a <b>Google Slides</b> link, up to 2 GB. Slides can be replaced any time; a new version comes back to you for review.</li>
+          <li>Every upload is checked: aspect ratio (16:9), videos, notes. The speaker sees right away how it will look.</li>
+          <li><b>Speaker notes</b> come from PowerPoint. Keynote and PDF don't carry them, but the speaker can type them next to each slide in the preview (saved automatically).</li>
+          <li>You can upload on a speaker's behalf (<b>Upload for speaker</b>), e.g. for a partner who e-mailed the file.</li>
+          <li><b>PowerPoint videos</b> play right in the presentation, in their place on the slide, even offline. They start on their own or with the next click, as set in PowerPoint. The speaker monitor shows when the next click plays a video.</li>
+          <li>A <b>YouTube or Vimeo</b> video only plays if the room has internet, and an ad may run before it. A video the presentation only links to (a file on the speaker's computer) or an old format (WMV, AVI) won't play. You and the speaker see an <b>Upload video</b> button next to it: upload an MP4 and it plays offline.</li>
+          <li><b>Video sound</b> goes to the projector's audio output (HDMI) automatically, otherwise to the computer's default sound. Pick another output (e.g. a USB mixer) in the room control below the screens. In the browser click <b>Show audio outputs</b> first: Chrome only shows speaker and HDMI names after you allow the microphone (nothing is recorded).</li>
+        </ul>
+      </section>
+
+      <section id="room">
+        <h2>In the room</h2>
+        <ol>
+          <li>In the admin, click <b>Connect projection</b> next to the room and open the link in <b>Chrome or Edge</b> on the computer connected to the projector.</li>
+          <li>Click <b>Allow screens</b> so the browser can see the projector. If the browser blocks the window, allow pop-ups for FckScrn.</li>
+          <li>On the right, set which screen is the <b>Projection</b> and which the <b>Speaker monitor</b>. The player remembers it. Just a laptop and a projector? The player sets the laptop to <b>Control + speaker monitor</b>: during a talk it shows the notes, time and slides with the buttons below. <b>Programme</b> brings back the full controls.</li>
+          <li>Click <b>Start projection</b>, then <b>press any key</b> or the clicker once on the projector. It goes fullscreen and opens the speaker monitor. Browsers require that one key press. Then it stays until you close the window; a short Esc won't drop it (in Chrome only holding Esc leaves fullscreen). If it ever does, any key brings it back.</li>
+        </ol>
+        <table>
+          <tr><th>Key / clicker</th><th>Action</th></tr>
+          <tr><td>→, space, PageDown</td><td>next slide</td></tr>
+          <tr><td>←, PageUp</td><td>previous slide</td></tr>
+          <tr><td>B or .</td><td>black screen (and back)</td></tr>
+          <tr><td>Esc (in the control)</td><td>end the talk</td></tr>
+        </table>
+        <ul>
+          <li>Keep the control tab open, it drives the projection. Everything is downloaded in advance, so if the internet drops, the show goes on.</li>
+          <li>Between talks the projection never shows the desktop: the partner loop runs, or black with the next talk.</li>
+          <li><b>Message to the speaker:</b> “5 minutes left”, “Time's up” or your own text lights up big on the speaker monitor and the speaker's phone. The technician sends it from the room control, the organizer from the event admin (next to a running room). It clears itself after 5 minutes.</li>
+          <li><b>Phone as speaker monitor:</b> the room control shows a QR code. The speaker scans it and mostly sees their notes, plus the time, the current, previous and next slide and messages from the technician, with big buttons to change slides (on a slide with a video the button plays it). On the last slide <b>Questions on screen</b> puts the audience questions up, and the speaker ticks them off. Handy without a stage monitor. Phone and room computer need internet.</li>
+          <li><b>Help button:</b> on the speaker's phone. The room control flashes “The speaker needs help!” with a beep, and the organizer sees it in the admin. The technician clicks <b>On my way</b> and the speaker sees “The technician is on the way.”</li>
+          <li>The optional <b>desktop app</b> goes fullscreen by itself and can run the original in PowerPoint or Keynote. Paste the same room link into it.</li>
+        </ul>
+      </section>
+
+      <section id="qa">
+        <h2>Questions, polls and panels</h2>
+        <ul>
+          <li>Every talk and panel has its own <b>QR code</b>, small in the top left corner of the projection. The audience asks from their phones, name optional, no sign-up, and upvotes good questions.</li>
+          <li>Questions don't distract the speaker mid-talk. At the end the technician (or the speaker from the phone) puts them on the big screen with one click, and only then do they show on the speaker monitor too; during a panel they're always there. The speaker, moderator, technician or organizer ticks off answered ones: they leave the big screen, drop to the bottom on the monitor and a misclick can be undone; the organizer can hide one.</li>
+          <li><b>Questions on projection</b> in the room control shows them across the screen with a large QR code.</li>
+          <li><b>Polls:</b> the speaker (on their link) or the organizer (in the Questions window) writes a question and options, one per line, and clicks <b>Start poll</b>. Leave the options empty and people answer with one word, shown as a word cloud. The audience votes via the same QR code. <b>Poll on projection</b> in the room control shows the results live on the screen.</li>
+          <li>Add a <b>panel</b> with <b>+ Panel</b>: topic, moderator, panelists one by one and optionally your own background (image or video).</li>
+          <li>Questions can be switched off per talk in the <b>Questions</b> window.</li>
+        </ul>
+      </section>
+
+      <section id="loop">
+        <h2>Partner loop</h2>
+        <ul>
+          <li>Drag photos (JPG, PNG, WebP, GIF, SVG) and videos (MP4, MOV) into the <b>Partner loop</b> in the admin, several at once if you like.</li>
+          <li>Set how long each photo shows and the order with the arrows. With several rooms, an item can play in one room only. <b>Play loop</b> shows how it will look on the projection.</li>
+          <li>Videos play in full, muted. The loop runs during breaks and between talks; it can be switched off in the room.</li>
+        </ul>
+      </section>
+
+      <section id="public">
+        <h2>Event page and door signs</h2>
+        <ul>
+          <li>Under <b>After the event</b> in the admin, turn on the <b>Public event page</b> and send the link to attendees.</li>
+          <li><b>During the event</b> it shows what's on in each room and what's next: what is really being projected, otherwise the schedule.</li>
+          <li><b>Door sign:</b> below the page link there's a link for each room. Open it on a TV or tablet by the door and leave it: big “Now” and “Next”, refreshing by itself.</li>
+          <li><b>Your own door sign background:</b> upload an image (SVG too), animation (GIF) or video (MP4, WebM, MOV) in the same place. It loops silently and “Now / Next” stays readable on top. It applies to all rooms' signs, which pick it up by themselves.</li>
+          <li><b>After the event</b> it has the slides (PDF) of speakers who allowed it on their link. The page goes away with the event.</li>
+        </ul>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>When something doesn't work</h2>
+        <table>
+          <tr><th>What happens</th><th>What to do</th></tr>
+          <tr><td>The projection opened on the laptop, not the projector</td><td>In the room control, set the projector's role to <b>Projection</b>. If the projector isn't listed, click <b>Allow screens</b> or unplug and replug it.</td></tr>
+          <tr><td>The projection window didn't open</td><td>The browser blocked it. Allow pop-ups for FckScrn in the address bar and click again.</td></tr>
+          <tr><td>The projection isn't fullscreen</td><td>Click into the projection window or press a key or the clicker. The browser needs that one press.</td></tr>
+          <tr><td>A talk has no Start button</td><td>The speaker hasn't uploaded, or there's no PDF of the file yet. Check the admin. In a pinch, run the original in the desktop app.</td></tr>
+          <tr><td>A video in the slides doesn't play</td><td>Check the talk in the event admin: a linked video, YouTube without internet or an old format has an Upload video (MP4) button there. As a last resort run the original in PowerPoint from the desktop app.</td></tr>
+          <tr><td>No notes on the speaker monitor</td><td>The slides are PDF or Keynote. The speaker can type notes in the preview on their link; the room gets them on the next sync.</td></tr>
+          <tr><td>The internet went down</td><td>Nothing happens, the slides are downloaded. Questions, polls, the speaker's phone and messages wait until it's back.</td></tr>
+          <tr><td>The speaker's phone says “room offline”</td><td>The room computer has no internet, or the room control isn't open. Check the control tab.</td></tr>
+          <tr><td>Lost the admin link</td><td>There's no way in without it. Search your e-mail or browser history. Save it right after creating the event.</td></tr>
+        </table>
+      </section>
+
+      <section id="activation">
+        <h2>Activation and payment</h2>
+        <p>Online, an event is free in <b>trial mode</b>: everything works, including a rehearsal in the room, with a "Zkušební režim" (trial) watermark over the projection. Click <b>Aktivovat akci</b> (activate), enter company details and an e-mail. The event is activated right away and the invoice arrives by e-mail, due in 14 days.</p>
+      </section>
+
+      <section id="data">
+        <h2>Data and security</h2>
+        <ul>
+          <li>Whoever has the admin link can manage the event. If it leaks, click <b>Vytvořit nový odkaz</b> (new link) in the admin; the old one stops working immediately.</li>
+          <li>A speaker link only allows uploading that speaker's file. A room link only allows playing that room's programme.</li>
+          <li>The event deletes itself with all files <b>14 days after its date</b>. Before that you can download everything as one ZIP, or delete it right away.</li>
+          <li><b>Analytics:</b> only on the public product pages (home, help) and only if you allow it in the “Cookies” bar. Event admin, speaker links, rooms and audience pages are never measured.</li>
+        </ul>
+      </section>
+
+      <section id="claude">
+        <h2>Claude and MCP</h2>
+        <p>Dictate the programme to an AI assistant, by voice or text. FckScrn has an MCP server that Claude, ChatGPT and other MCP clients work with. Claude Code is the simplest (command below). In apps that add MCP as a connector (e.g. ChatGPT, Claude.ai), paste the connector address from the admin: <code>https://fckscrn.com/mcp/&lt;key&gt;</code>. No sign-in, the key is in the address. Copy the command from <b>Control with AI</b> in the admin:</p>
+        <pre class="cmd">claude mcp add --transport http fckscrn https://fckscrn.com/mcp --header "Authorization: Bearer &lt;key from the admin link&gt;"</pre>
+        <p>The key is the last part of the admin link (<code>/e/<b>key</b></code>). No separate API key is needed.</p>
+        <ul class="examples">
+          <li>"Create an event Brno Meetup on 14 November, one room."</li>
+          <li>"Add a talk by Jana Dvořáková, Intro, at 18:00 for 10 minutes."</li>
+          <li>"Then Martin Kolář, AI in support." (the time follows automatically)</li>
+          <li>"Add a coffee break after him, 15 minutes."</li>
+          <li>"Who hasn't uploaded yet? Give me their links."</li>
+        </ul>
+        <p>Tools: <code>create_event</code>, <code>use_event</code>, <code>get_program</code>, <code>add_talk</code>, <code>add_break</code>, <code>update_talk</code>, <code>delete_talk</code>, <code>add_room</code>, <code>rename_room</code>, <code>speaker_links</code>, <code>event_status</code>.</p>
+      </section>
+
+      <section id="api">
+        <h2>API</h2>
+        <p>Everything the admin can do is available as a JSON REST API. Access is controlled by the secret tokens in the links: <code>adminToken</code> (<code>/e/…</code>, the whole event), <code>speakerToken</code> (<code>/s/…</code>, upload only), <code>playerToken</code> (<code>/p/…</code>, read the room's programme). The full endpoint list is in the <a href="/napoveda#api">Czech help</a>; paths and fields are in English.</p>
+        <pre class="cmd">curl -X POST https://fckscrn.com/api/admin/&lt;adminToken&gt;/talks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Intro","speaker":"Jana","startsAt":"18:00","durationMin":10,"roomId":1}'</pre>
+      </section>
+
+      <section id="server">
+        <h2>Self-hosting</h2>
+        <p>FckScrn is open source (AGPL-3.0). On your own computer or server it's free, with no payments and no watermark. See <code>INSTALL.md</code> and <code>DEPLOY.md</code> in the <a href="https://github.com/fckscrn/fckscrn" rel="noopener">GitHub repository</a>, or open the repository in Claude Code or Codex and say "Install and run FckScrn according to INSTALL.md".</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="credit">FckScrn is open source · made by <b>Tomáš Foltas</b>, creator of <a href="https://domee.app" rel="noopener">Domee.app</a> – a property management app</footer>
+</body>
+</html>

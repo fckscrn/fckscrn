@@ -169,6 +169,8 @@
         localize();
         $("#copy").onclick = () => copy(url, t({ cs: "Odkaz zkopírován. Uložte si ho třeba do kalendáře k akci.", en: "Link copied. Save it, e.g. in your calendar entry for the event." }));
         created = true;
+        // analytics (only where GTM runs, only with consent): that an event was created and its kind, never the link
+        window.dataLayer?.push({ event: "fckscrn_event_created", event_mode: mode, rooms_count: mode === "multi" ? document.querySelectorAll("#room-list input").length : 1 });
         step(3);
       } catch (err) { $("#err").textContent = err.message; $("#err").hidden = false; }
     });

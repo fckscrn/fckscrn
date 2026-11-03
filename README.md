@@ -2,6 +2,8 @@
 
 > *because „sorry, it doesn't work" is not an option*
 
+[![Líbí se vám FckScrn? Podpořte provoz a vývoj dobrovolným příspěvkem: QR platba 490 Kč, jiná částka na fckscrn.com/podpora](docs/podpora.svg)](https://fckscrn.com/podpora)
+
 **Prezentace na akcích, které prostě fungují.** Řečníci nahrají prezentaci přes vlastní odkaz, počítač v sále si ji stáhne dopředu a jedním kliknutím ji spustí na správných obrazovkách: slidy pro publikum, poznámky, čas a další slide pro řečníka.
 
 Žádné flashky, žádné „počkejte, já si to jen přepnu“, žádný presenter view na projektoru.
@@ -100,4 +102,4 @@ FckScrn vytvořil **Tomáš Foltas**, autor [Domee.app](https://domee.app), apli
 
 **FckScrn** makes presentations at conferences, meetups and company events just work. Speakers upload their slides via a personal link; the computer in the room downloads everything in advance and starts each talk in one click on the right screens: slides for the audience, notes, timer and next slide for the speaker. Runs in Chrome or Edge with no install, works offline, plays PowerPoint videos, turns the speaker's phone into a monitor and clicker, and replaces Slido for audience Q&A. Laptop + projector only? The laptop is both the controls and the speaker monitor. Control it with AI assistants over MCP.
 
-Hosted version at [fckscrn.com/en](https://fckscrn.com/en), help at [fckscrn.com/en/help](https://fckscrn.com/en/help). Self-hosting: see [INSTALL.md](INSTALL.md) and [DEPLOY.md](DEPLOY.md). Licensed under AGPL-3.0 with an attribution notice (see [NOTICE](NOTICE)). Made by Tomáš Foltas.
+Like it? [Support hosting and development](https://fckscrn.com/en/support) with a voluntary contribution. Hosted version at [fckscrn.com/en](https://fckscrn.com/en), help at [fckscrn.com/en/help](https://fckscrn.com/en/help). Self-hosting: see [INSTALL.md](INSTALL.md) and [DEPLOY.md](DEPLOY.md). Licensed under AGPL-3.0 with an attribution notice (see [NOTICE](NOTICE)). Made by Tomáš Foltas.

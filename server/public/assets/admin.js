@@ -19,14 +19,49 @@ let uploadFor = null; // talk id with the "upload on behalf" panel open
 let busy = null;      // { id, pct } while uploading for a talk
 let loopReport = null; // { ok, failed: [{ name, why }] } after a loop upload
 
+let docs = null; // billing documents (proforma, invoice) from the invoicing service
+
 async function load() {
-  try { view = await api("GET", base); render(); }
+  try { view = await api("GET", base); render(); loadDocs(); }
   catch (e) { app.innerHTML = `<p class="error">${esc(e.message)}</p>`; }
 }
 
 async function act(method, url, body, msg) {
   try { view = await api(method, base + url, body); render(); if (msg) toast(msg); return true; }
   catch (e) { toast(e.message); return false; }
+}
+
+async function loadDocs() {
+  if (!view?.billing?.enabled || view.billing.status === "trial") return;
+  try { docs = (await api("GET", `${base}/documents`)).documents; } catch (e) { docs = { error: e.message }; }
+  render();
+}
+
+// hosted version: proforma to pay (with QR) and, once paid, the invoice; organizers download them here
+function docsHTML() {
+  const b = view.billing;
+  if (!b?.enabled || b.status === "trial") return "";
+  const money = n => `${Number(n).toLocaleString("cs-CZ", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč`;
+  const name = d => d.kind === "proforma" ? t({ cs: "Zálohová faktura", en: "Proforma invoice" }) : t({ cs: "Faktura", en: "Invoice" });
+  const list = Array.isArray(docs) ? docs : [];
+  return `<section class="add" id="fakturace">
+    <h2>${t({ cs: "Fakturace", en: "Invoices" })}</h2>
+    <p class="sub">${t({ cs: "Doklady k této akci. Po připsání platby zálohy tu přibude faktura, obvykle do druhého dne.", en: "Documents for this event. Once the proforma is paid, the invoice appears here, usually by the next day." })}</p>
+    ${docs === null ? `<p class="muted">${t({ cs: "Načítám doklady…", en: "Loading documents…" })}</p>`
+      : docs.error ? `<p class="error">${esc(docs.error)}</p>`
+      : `<div class="docs">${list.map(d => `<div class="doc">
+          <div class="doc-head"><b>${name(d)} ${esc(d.number)}</b><span class="mono">${money(d.total)}</span>
+            <span class="st ${d.status === "paid" ? "ready" : "warning"}">${d.status === "paid"
+              ? t({ cs: `Uhrazeno${d.paidDate ? " " + esc(fmtDay(d.paidDate)) : ""}`, en: `Paid${d.paidDate ? " " + esc(fmtDay(d.paidDate)) : ""}` })
+              : t({ cs: `Čeká na úhradu, splatnost ${esc(fmtDay(d.dueDate))}`, en: `Awaiting payment, due ${esc(fmtDay(d.dueDate))}` })}</span>
+            <a class="btn small" href="${base}/documents/${esc(d.id)}/pdf">${t({ cs: "Stáhnout PDF", en: "Download PDF" })}</a></div>
+          ${d.pay ? `<div class="pay">${d.pay.qr ? `<div class="qr">${d.pay.qr}</div>` : ""}
+            <dl><dt>${t({ cs: "Účet", en: "Account" })}</dt><dd class="mono">${esc(d.pay.account)}</dd>
+              <dt>IBAN</dt><dd class="mono">${esc(d.pay.iban)}</dd>
+              <dt>${t({ cs: "Variabilní symbol", en: "Reference (VS)" })}</dt><dd class="mono">${esc(d.pay.variableSymbol)}</dd>
+              <dt>${t({ cs: "Částka", en: "Amount" })}</dt><dd class="mono">${money(d.pay.amount)}</dd></dl></div>` : ""}
+        </div>`).join("")}</div>`}
+  </section>`;
 }
 
 const talksOnly = () => view.talks.filter(x => x.kind !== "break");
@@ -134,6 +169,8 @@ function render() {
       })}</p>
       <div><button class="btn small" id="rotate">${t({ cs: "Vytvořit nový odkaz", en: "Create a new link" })}</button></div>
     </section>
+
+    ${docsHTML()}
 
     <section class="add">
       <h2>${t({ cs: "Po akci", en: "After the event" })}</h2>
@@ -370,10 +407,10 @@ function billingHTML() {
   const b = view.billing;
   if (!b?.enabled) return "";
   const price = `${b.price.toLocaleString("cs-CZ")} Kč`;
-  const invoice = b.invoiceUrl ? `<a href="${esc(b.invoiceUrl)}" target="_blank" rel="noopener">${t({ cs: "Faktura", en: "Invoice" })} ${esc(b.invoiceNumber || "")}</a>` : "";
+  const invoice = `<a href="#fakturace">${t({ cs: "Doklady najdete dole v sekci Fakturace", en: "Documents are in the Invoices section below" })}</a>`;
   if (b.status === "paid") return `<div class="bill done"><span class="st ready">${t({ cs: "Akce je aktivní a zaplacená", en: "The event is active and paid" })}</span>${invoice}<span class="muted">${t({ cs: "Děkujeme.", en: "Thank you." })}</span></div>`;
   if (b.status === "ordered") return `<div class="bill done"><span class="st warning">${t({ cs: "Akce je aktivní, čekáme na úhradu", en: "The event is active, waiting for payment" })}</span>${invoice}
-    <span class="muted">${t({ cs: `Poslali jsme ji na ${esc(b.customer?.email || "váš e-mail")}, splatnost 14 dní.`, en: `We sent it to ${esc(b.customer?.email || "your e-mail")}, due in 14 days.` })}</span></div>`;
+    <span class="muted">${t({ cs: `Zálohová faktura ${esc(b.invoiceNumber || "")}, splatnost 14 dní.`, en: `Proforma ${esc(b.invoiceNumber || "")}, due in 14 days.` })}</span></div>`;
   const c = billDraft;
   return `<section class="bill">
     <div class="bill-head">
@@ -401,8 +438,8 @@ function billingHTML() {
       <label class="field"><span>${t({ cs: "E-mail pro fakturu", en: "E-mail for the invoice" })}</span><input id="b-email" name="email" type="email" required value="${esc(c.email || "")}"></label>
       <div class="row"><button class="btn primary">${t({ cs: "Objednat a aktivovat", en: "Order and activate" })} · ${price}</button><button class="btn ghost" type="button" id="bill-close">${t({ cs: "Zrušit", en: "Cancel" })}</button></div>
       <p class="muted" style="font-size:13px;margin:0">${t({
-        cs: "Akce se aktivuje hned. Fakturu vám pošleme e-mailem, splatnost 14 dní. Nejsem plátce DPH, cena je konečná.",
-        en: "The event is activated right away. We'll e-mail the invoice, due in 14 days. Not a VAT payer; the price is final.",
+        cs: "Akce se aktivuje hned. Zálohovou fakturu (splatnost 14 dní) najdete tady ve správě akce v sekci Fakturace, po úhradě tam přibude faktura. Nejsem plátce DPH, cena je konečná.",
+        en: "The event is activated right away. The proforma invoice (due in 14 days) is right here in the Invoices section; after payment the invoice appears there too. Not a VAT payer; the price is final.",
       })}</p>
     </form>` : ""}
   </section>`;
@@ -612,7 +649,7 @@ function bind() {
       e.preventDefault();
       const btn = billForm.querySelector("button.primary");
       btn.disabled = true; btn.textContent = t({ cs: "Vystavuji fakturu…", en: "Issuing the invoice…" });
-      if (await act("POST", "/order", formData(billForm), t({ cs: "Hotovo. Akce je aktivní a faktura je na cestě.", en: "Done. The event is active and the invoice is on its way." }))) { billOpen = false; billDraft = {}; render(); }
+      if (await act("POST", "/order", formData(billForm), t({ cs: "Hotovo. Akce je aktivní, zálohová faktura je dole v sekci Fakturace.", en: "Done. The event is active; the proforma is in the Invoices section below." }))) { billOpen = false; billDraft = {}; render(); loadDocs(); }
       else { btn.disabled = false; render(); }
     };
   }

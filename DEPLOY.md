@@ -32,17 +32,29 @@ cd deploy && DOMAIN=<doména> docker compose up -d --build
 ```
 Kontrola: `docker compose logs -f fckscrn`, pak otevřít https://<doména>.
 
-## 3. Fakturoid webhook (jen hostovaná verze s fakturací)
-Ve Fakturoidu povolit webhooky (Nastavení → Uživatelský účet) a založit webhook:
-- URL `https://<doména>/api/billing/fakturoid`
-- auth header `Bearer <FAKTUROID_WEBHOOK_TOKEN z .env.local>`
-- události `invoice_paid`, `invoice_payment_removed`
+## 3. Fakturace (jen hostovaná verze)
+Do `server/.env.local` doplnit `FAKTURACE_URL` a `FAKTURACE_API_TOKEN` (viz INSTALL.md). Bez nich je všechno zdarma.
 
 ## 4. Nová verze
 ```bash
 cd /opt/fckscrn && git pull && cd deploy && DOMAIN=<doména> docker compose up -d --build
 ```
 Před aktualizací udělat snapshot VPS u poskytovatele.
+
+## 5. Staging na stejném serveru (volitelné)
+Druhá instance s vlastním kódem a daty, skrytá před vyhledávači, na vyzkoušení verze před ostrou.
+Na serveru v `/opt/fckscrn/deploy/.env` (do gitu nepatří):
+```
+DOMAIN=example.com
+STAGING_DOMAIN=test.example.com
+STAGING_DIR=/opt/fckscrn-staging
+COMPOSE_FILE=docker-compose.yml:docker-compose.staging.yml
+```
+DNS záznam pro `STAGING_DOMAIN` na stejnou IP. Pak z vývojového počítače:
+```bash
+tools/deploy.sh <ssh host> staging   # nejdřív staging, proklikat
+tools/deploy.sh <ssh host> live      # pak ostrá verze
+```
 
 ## Data
 Databáze a soubory jsou v Docker svazku `fckscrn-data`. Akce se po 14 dnech od konání mažou samy.

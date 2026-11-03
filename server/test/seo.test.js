@@ -65,3 +65,20 @@ test("Google Tag Manager: only product pages of the hosted site, with consent mo
   assert.doesNotMatch(await (await fetch(test + "/")).text(), /googletagmanager/);
   assert.doesNotMatch(await (await fetch(site + "/")).text(), /analytics-head/);
 });
+
+test("staging label: tag and [TEST] title on pages, never on the projection; support page + QR", async () => {
+  const staging = await start({ envLabel: "test.fckscrn.com", indexable: false });
+  const home = await (await fetch(staging + "/")).text();
+  assert.match(home, /<title>\[TEST\] /);
+  assert.match(home, /TESTOVACÍ VERZE/);
+  assert.doesNotMatch(await (await fetch(site + "/")).text(), /TESTOVACÍ VERZE/, "the live site has no tag");
+  // support page and its QR payment with the chosen amount
+  const sup = await fetch(site + "/podpora");
+  assert.equal(sup.status, 200);
+  assert.match(await sup.text(), /96777198\/2010/);
+  const qr = await fetch(site + "/api/support/qr.svg?amount=490");
+  assert.equal(qr.headers.get("content-type"), "image/svg+xml");
+  assert.match(await qr.text(), /^<svg/);
+  assert.equal((await fetch(site + "/api/support/qr.svg?amount=0")).status, 400);
+  assert.equal((await fetch(site + "/en/support")).status, 200);
+});

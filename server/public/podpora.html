@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--analytics-head-->
+  <title>Podpořte FckScrn · FckScrn</title>
+  <meta name="description" content="FckScrn je open source a zdarma. Provoz a vývoj můžete podpořit dobrovolným příspěvkem přes QR platbu.">
+  <link rel="canonical" href="%ORIGIN%/podpora">
+  <link rel="alternate" hreflang="cs" href="%ORIGIN%/podpora">
+  <link rel="alternate" hreflang="en" href="%ORIGIN%/en/support">
+  <link rel="alternate" hreflang="x-default" href="%ORIGIN%/podpora">
+  <meta property="og:title" content="Podpořte FckScrn · FckScrn">
+  <meta property="og:description" content="FckScrn je open source a zdarma. Provoz a vývoj můžete podpořit dobrovolným příspěvkem přes QR platbu.">
+  <meta property="og:image" content="%ORIGIN%/assets/logo/og-cs.png">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+  <script src="/assets/theme.js"></script>
+</head>
+<body>
+  <!--analytics-body-->
+  <header class="top"><a class="brand" href="/">Fck<span class="scrn">Scrn</span></a>
+    <nav class="lp-nav"><a href="/">Úvod</a><a href="/napoveda">Nápověda</a></nav>
+    <a class="btn small primary nav-cta" href="/nova-akce">Založit akci</a>
+    <details class="langmenu"><summary aria-label="Jazyk / Language">CZ</summary><div><a href="/podpora" hreflang="cs" lang="cs" aria-current="true">Čeština</a><a href="/en/support" hreflang="en" lang="en">English</a></div></details>
+  </header>
+
+  <main class="lp">
+    <section class="support" aria-labelledby="sup-h">
+      <div class="support-text">
+        <p class="claim" lang="en">open source · dobrovolný příspěvek</p>
+        <h1 id="sup-h">Podpořte FckScrn</h1>
+        <p class="lead">FckScrn je open source a na vlastním serveru zdarma. Provoz hostované verze, server a další vývoj ale něco stojí. Pokud vám FckScrn ušetřil nervy na akci, nepohrdneme menším příspěvkem na údržbu.</p>
+        <div class="amounts" role="group" aria-label="Částka">
+          <button type="button" data-a="190">190 Kč</button>
+          <button type="button" data-a="490" aria-pressed="true">490 Kč</button>
+          <button type="button" data-a="990">990 Kč</button>
+          <button type="button" data-a="1990">1 990 Kč</button>
+          <label class="own"><span>Jiná částka</span><input id="amount" type="number" min="1" max="100000" step="1" value="490" inputmode="numeric"> Kč</label>
+        </div>
+        <dl class="paydl">
+          <dt>Účet</dt><dd class="mono">96777198/2010</dd>
+          <dt>IBAN</dt><dd class="mono">CZ80 2010 0000 0000 9677 7198</dd>
+          <dt>Zpráva</dt><dd class="mono">Podpora FckScrn</dd>
+          <dt>Částka</dt><dd class="mono" id="amount-out">490 Kč</dd>
+        </dl>
+      </div>
+      <figure class="support-qr">
+        <img id="qr" src="/api/support/qr.svg?amount=490" alt="QR platba pro příspěvek" width="240" height="240">
+        <figcaption>QR platba. Částku můžete v aplikaci banky ještě změnit.</figcaption>
+      </figure>
+    </section>
+    <p class="fine support-fine">Příspěvek je dobrovolný a nic za něj nedostanete, jen náš velký dík. Potřebujete na něj doklad? Napište na <a href="mailto:info@tomasfoltas.cz">info@tomasfoltas.cz</a>.</p>
+  </main>
+
+  <footer class="credit"><a href="/napoveda">Nápověda</a> · <a href="https://github.com/fckscrn/fckscrn" rel="noopener">GitHub</a> · FckScrn je open source · vytvořil <b>Tomáš Foltas</b>, autor <a href="https://domee.app" rel="noopener">Domee.app</a> – aplikace pro správu nemovitostí</footer>
+  <script>
+    // the QR follows the amount (the banking app usually lets you change it once more before sending)
+    (() => {
+      const input = document.getElementById("amount"), qr = document.getElementById("qr"), out = document.getElementById("amount-out");
+      const btns = [...document.querySelectorAll("[data-a]")];
+      let t;
+      const set = v => {
+        const a = Math.round(+v);
+        btns.forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.a === a)));
+        if (!(a >= 1 && a <= 100000)) return;
+        out.textContent = a.toLocaleString("cs-CZ") + " Kč";
+        clearTimeout(t); t = setTimeout(() => { qr.src = "/api/support/qr.svg?amount=" + a; }, 200);
+      };
+      btns.forEach(b => b.onclick = () => { input.value = b.dataset.a; set(b.dataset.a); });
+      input.oninput = () => set(input.value);
+    })();
+  </script>
+</body>
+</html>

@@ -98,7 +98,7 @@ export function openDb(file) {
   if (!ecols.includes("mode")) db.exec("ALTER TABLE events ADD COLUMN mode TEXT NOT NULL DEFAULT 'multi'");
   // billing (hosted version only): trial → ordered (active, invoice sent) → paid
   for (const [col, def] of [["billing_status", "TEXT NOT NULL DEFAULT 'trial'"], ["billing", "TEXT"], ["invoice_id", "INTEGER"],
-    ["invoice_number", "TEXT"], ["invoice_url", "TEXT"], ["price", "INTEGER"], ["ordered_at", "TEXT"], ["paid_at", "TEXT"]]) {
+    ["invoice_number", "TEXT"], ["invoice_url", "TEXT"], ["price", "INTEGER"], ["ordered_at", "TEXT"], ["paid_at", "TEXT"], ["billing_ref", "TEXT"]]) {
     if (!ecols.includes(col)) db.exec(`ALTER TABLE events ADD COLUMN ${col} ${def}`);
   }
   // upload deadline for speakers; public page with shared slides after the event

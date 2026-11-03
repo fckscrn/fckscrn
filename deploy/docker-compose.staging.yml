@@ -1,0 +1,28 @@
+# Optional second instance on the same server: a staging copy (own code folder, own data, hidden from
+# search engines) to try a version before it goes live. Use together with docker-compose.yml:
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.staging.yml   (e.g. in deploy/.env)
+#   STAGING_DOMAIN=test.example.com  STAGING_DIR=/opt/fckscrn-staging
+services:
+  staging:
+    build: ${STAGING_DIR:-..}
+    restart: unless-stopped
+    env_file: ../server/.env.local
+    environment:
+      DATA_DIR: /data
+      PUBLIC_URL: https://${STAGING_DOMAIN}
+      SEARCH_INDEX: "off"            # never indexed, never measured
+      FAKTURACE_URL: ""              # never invoices: no real proformas from the staging copy
+      ENV_LABEL: test.fckscrn.com    # "TESTOVACÍ VERZE" tag on every page and [..] in the tab title
+    volumes:
+      - staging-data:/data
+    expose:
+      - "8080"
+
+  caddy:
+    environment:
+      STAGING_DOMAIN: ${STAGING_DOMAIN}
+    volumes:
+      - ./Caddyfile.staging:/etc/caddy/Caddyfile:ro
+
+volumes:
+  staging-data:

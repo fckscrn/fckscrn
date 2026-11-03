@@ -52,18 +52,18 @@ V playeru vpravo nastavte, která obrazovka je **projekce** a která **monitor �
 
 ## Placená online verze (volitelné)
 Bez těchto proměnných je všechno zdarma a bez vodoznaku. S nimi je nová akce ve zkušebním režimu (vodoznak na projekci),
-dokud ji organizátor neaktivuje objednávkou. Fakturu vystaví a pošle Fakturoid.
+dokud ji organizátor neaktivuje objednávkou. Doklady vystavuje samostatná fakturační služba přes jednoduché HTTP API
+(zálohová faktura hned, faktura po úhradě); organizátor si je stáhne ve správě akce v sekci Fakturace.
 
 | Proměnná | Význam |
 |---|---|
-| `FAKTUROID_ACCOUNT` | slug účtu (z adresy app.fakturoid.cz/**slug**) |
-| `FAKTUROID_CLIENT_ID`, `FAKTUROID_CLIENT_SECRET` | Fakturoid → Nastavení → Uživatelský účet → API v3 |
-| `FAKTUROID_EMAIL` | kontakt do hlavičky User-Agent |
-| `FAKTUROID_WEBHOOK_TOKEN` | tajný řetězec; webhook `invoice_paid` na `https://<server>/api/billing/fakturoid` s hlavičkou `Authorization: Bearer <token>` |
+| `FAKTURACE_URL` | adresa fakturační služby (např. `http://fakturace:8090` ve stejné síti Dockeru) |
+| `FAKTURACE_API_TOKEN` nebo `FAKTURACE_API_TOKEN_FILE` | tajný token pro hlavičku `Authorization: Bearer …` |
 | `PRICE_SINGLE`, `PRICE_MULTI` | cena za akci v Kč (výchozí 1490 / 4990) |
 
-Ve Fakturoidu musí být vyplněný bankovní účet a zapnuté odesílání e-mailů. Úhrada se zjistí z webhooku, záložně se kontroluje každou hodinu.
-Vyzkoušení bez Fakturoidu: `node tools/dev-billing-server.mjs` (falešné faktury).
+Služba musí umět `POST /api/proformas` (`{ ref, customer, items, dueDays }` → `{ id, number, … }`, pro stejný `ref` stejný doklad),
+`GET /api/documents?ref=…` (seznam dokladů se stavem `unpaid`/`paid`) a `GET /api/documents/:id/pdf`. Úhrada se kontroluje každou hodinu.
+Vyzkoušení bez služby: `node tools/dev-billing-server.mjs` (falešné doklady).
 
 ## Data a zálohy
 Vše je v `server/data/` (při Dockeru ve svazku `/data`): databáze SQLite a nahrané soubory. Zálohujte celou složku.

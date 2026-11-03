@@ -118,3 +118,23 @@ html { scroll-padding-top: 80px; }
   .top .brand { flex: none; }
   .nav-cta + .langmenu, .langmenu + .theme-toggle { margin-left: 0; }
 }
+
+/* support page: an inverted card (black on the white site, white on the dark one) */
+.lp .support { padding: 40px; border-top: 0; }
+.support { margin: 56px 0 16px; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; padding: 40px; border-radius: 16px; background: var(--fg); color: var(--bg); }
+.support .claim { color: color-mix(in srgb, var(--bg) 60%, var(--fg)); margin: 0 0 10px; }
+.support h1 { font-size: clamp(32px, 5vw, 52px); letter-spacing: -0.03em; line-height: 1.05; margin: 0 0 14px; }
+.support .lead { color: color-mix(in srgb, var(--bg) 78%, var(--fg)); max-width: 56ch; margin: 0 0 22px; }
+.amounts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 22px; }
+.amounts button { font: 600 15px var(--sans); padding: 9px 16px; border-radius: 99px; border: 1.5px solid var(--bg); background: transparent; color: var(--bg); cursor: pointer; }
+.amounts button[aria-pressed="true"] { background: var(--bg); color: var(--fg); }
+.amounts .own { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; margin-left: 4px; }
+.amounts .own input { width: 110px; font: 600 15px var(--mono); padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--bg); background: transparent; color: var(--bg); }
+.paydl { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 0; font-size: 15px; }
+.paydl dt { color: color-mix(in srgb, var(--bg) 60%, var(--fg)); }
+.paydl dd { margin: 0; }
+.support-qr { margin: 0; display: grid; gap: 10px; justify-items: center; text-align: center; }
+.support-qr img { width: 240px; height: 240px; background: #fff; padding: 12px; border-radius: 12px; }
+.support-qr figcaption { font-size: 13px; max-width: 26ch; color: color-mix(in srgb, var(--bg) 70%, var(--fg)); }
+.support-fine { max-width: 70ch; }
+@media (max-width: 760px) { .lp .support { padding: 24px; } .support { grid-template-columns: 1fr; gap: 28px; } .support-qr img { width: 200px; height: 200px; } }

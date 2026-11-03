@@ -1,0 +1,24 @@
+# Live site + staging copy (see docker-compose.staging.yml). Certificates are automatic.
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy fckscrn:8080 {
+		transport http {
+			read_timeout 30m
+			write_timeout 30m
+		}
+	}
+}
+
+{$STAGING_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy staging:8080 {
+		transport http {
+			read_timeout 30m
+			write_timeout 30m
+		}
+	}
+}
+
+{$REDIRECTS:www.fckscrn.com, fckscrn.cz, www.fckscrn.cz} {
+	redir https://{$DOMAIN}{uri} permanent
+}

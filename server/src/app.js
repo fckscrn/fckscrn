@@ -57,8 +57,8 @@ class HttpError extends Error {
 // retentionDays: event data is deleted this many days after the event date (0 = keep forever).
 // Events without a date are kept 60 days from creation.
 // landing: true = "/" shows the product page (fckscrn.com); false = "/" goes straight to creating an event (self-host)
-// billing: null (self-host: everything free, no watermark) or { fakturoid, prices: { single, multi }, webhookToken }
-export function createApp({ dataDir, publicDir, playerDir, soffice = null, retentionDays = 14, landing = true, billing = null, fetchImpl = fetch, publicUrl = null, indexable = true, gtmId = null }) {
+// billing: null (self-host: everything free, no watermark) or { invoicing, prices: { single, multi } }
+export function createApp({ dataDir, publicDir, playerDir, soffice = null, retentionDays = 14, landing = true, billing = null, fetchImpl = fetch, publicUrl = null, indexable = true, gtmId = null, envLabel = null }) {
   fs.mkdirSync(path.join(dataDir, "files"), { recursive: true });
   const db = openDb(path.join(dataDir, "fckscrn.db"));
   const q = (sql, ...args) => db.prepare(sql).all(...args);
@@ -96,21 +96,29 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
   const watermark = e => !!billing && e.billing_status === "trial";
   const billingOut = e => !billing ? { enabled: false } : {
     enabled: true, status: e.billing_status, price: e.price || priceOf(e),
-    invoiceNumber: e.invoice_number, invoiceUrl: e.invoice_url, orderedAt: e.ordered_at, paidAt: e.paid_at,
+    invoiceNumber: e.invoice_number, orderedAt: e.ordered_at, paidAt: e.paid_at,
     customer: e.billing ? JSON.parse(e.billing) : null,
   };
 
   async function checkPayments() {
     if (!billing) return 0;
     let n = 0;
-    for (const e of q("SELECT * FROM events WHERE billing_status = 'ordered' AND invoice_id IS NOT NULL")) {
+    for (const e of q("SELECT * FROM events WHERE billing_status = 'ordered' AND billing_ref IS NOT NULL")) {
       try {
-        const inv = await billing.fakturoid.get(e.invoice_id);
-        if (inv.status === "paid") { run("UPDATE events SET billing_status = 'paid', paid_at = ? WHERE id = ?", inv.paid_on || new Date().toISOString().slice(0, 10), e.id); n++; }
+        const docs = await billing.invoicing.documents(e.billing_ref);
+        const paid = docs.find(d => d.status === "paid" && d.kind === "invoice") || docs.find(d => d.status === "paid");
+        if (paid) { run("UPDATE events SET billing_status = 'paid', paid_at = ? WHERE id = ?", paid.paidDate || new Date().toISOString().slice(0, 10), e.id); n++; }
       } catch (err) { console.error("payment check failed", e.id, err.message); }
     }
     return n;
   }
+
+  // documents for the event admin: the proforma (with payment details + QR) and, once paid, the invoice
+  const spd = d => ["SPD*1.0", `ACC:${String(d.iban || "").replace(/\s+/g, "")}`, `AM:${Number(d.total).toFixed(2)}`, "CC:CZK", `X-VS:${d.variableSymbol}`, `MSG:Zaloha ${d.number}`].join("*");
+  const documentOut = d => ({
+    id: d.id, kind: d.kind, number: d.number, status: d.status, total: d.total, issueDate: d.issueDate, dueDate: d.dueDate, paidDate: d.paidDate,
+    ...(d.kind === "proforma" && d.status !== "paid" ? { pay: { account: d.account, iban: d.iban, variableSymbol: d.variableSymbol, amount: d.total, qr: d.iban ? qrSvg(spd(d)) : null } } : {}),
+  });
 
   // ---------- lifetime ----------
 
@@ -237,34 +245,39 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
     if (c.ico && !/^\d{8}$/.test(c.ico)) badRequest("IČO má 8 číslic.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) badRequest("E-mail nevypadá správně.");
     const price = priceOf(e);
+    // own reference per order (event ids can come back after a delete)
+    const ref = `fckscrn:${e.id}:${crypto.randomBytes(4).toString("hex")}`;
+    const when = e.date ? ` (${e.date.split("-").reverse().join(". ").replace(/^0/, "").replace(/\. 0/, ". ")})` : "";
     let inv;
     try {
-      const subjectId = await billing.fakturoid.subject(c);
-      const when = e.date ? ` (${e.date.split("-").reverse().join(". ").replace(/^0/, "")})` : "";
-      inv = await billing.fakturoid.invoice({
-        subjectId, price, customId: `fckscrn-${e.id}`,
-        text: `FckScrn – prezentace na akci „${e.name}“${when}, ${e.mode === "single" ? "jeden sál" : "víc sálů"}`,
+      inv = await billing.invoicing.proforma({
+        ref, customer: c, dueDays: 14,
+        items: [{ description: `FckScrn – prezentace na akci „${e.name}“${when}, ${e.mode === "single" ? "jeden sál" : "víc sálů"}`, quantity: 1, unit: "akce", unit_price: price }],
       });
     } catch (err) {
       console.error("order failed", err.message);
-      throw new HttpError(502, "Fakturu se teď nepodařilo vystavit. Zkuste to prosím za chvíli znovu.");
+      throw new HttpError(502, "Zálohovou fakturu se teď nepodařilo vystavit. Zkuste to prosím za chvíli znovu.");
     }
-    run(`UPDATE events SET billing_status = 'ordered', billing = ?, invoice_id = ?, invoice_number = ?, invoice_url = ?, price = ?, ordered_at = ? WHERE id = ?`,
-      JSON.stringify(c), inv.id, inv.number, inv.public_html_url, price, new Date().toISOString(), e.id);
-    try { await billing.fakturoid.send(inv.id, { email: c.email, eventName: e.name }); }
-    catch (err) { console.error("invoice e-mail failed", err.message); } // the invoice link is shown in the admin anyway
+    run(`UPDATE events SET billing_status = 'ordered', billing = ?, billing_ref = ?, invoice_number = ?, price = ?, ordered_at = ? WHERE id = ?`,
+      JSON.stringify(c), ref, inv.number, price, new Date().toISOString(), e.id);
     return adminView(eventByAdmin(p.t));
   });
 
-  // Fakturoid webhook: invoice_paid / invoice_payment_removed
-  route("POST", "/api/billing/fakturoid", async req => {
-    if (!billing || !billing.webhookToken || req.headers.authorization !== `Bearer ${billing.webhookToken}`) throw new HttpError(401, "Unauthorized");
-    const m = await body(req);
-    const inv = m.body?.invoice;
-    const e = inv && one("SELECT * FROM events WHERE invoice_id = ?", inv.id);
-    if (e && m.event_name === "invoice_paid") run("UPDATE events SET billing_status = 'paid', paid_at = ? WHERE id = ?", inv.paid_on || new Date().toISOString().slice(0, 10), e.id);
-    if (e && m.event_name === "invoice_payment_removed") run("UPDATE events SET billing_status = 'ordered', paid_at = NULL WHERE id = ?", e.id);
-    return { ok: true };
+  route("GET", "/api/admin/:t/documents", async (req, p) => {
+    const e = eventByAdmin(p.t);
+    if (!billing || !e.billing_ref) return { documents: [] };
+    try { return { documents: (await billing.invoicing.documents(e.billing_ref)).map(documentOut) }; }
+    catch (err) { console.error("documents failed", err.message); throw new HttpError(502, "Doklady se teď nepodařilo načíst. Zkuste to za chvíli."); }
+  });
+  route("GET", "/api/admin/:t/documents/:id/pdf", async (req, p, url, res) => {
+    const e = eventByAdmin(p.t);
+    if (!billing || !e.billing_ref) notFound("Doklad nenalezen.");
+    const docs = await billing.invoicing.documents(e.billing_ref);
+    if (!docs.some(d => d.id === p.id)) notFound("Doklad nenalezen."); // only documents of this event
+    const r = await billing.invoicing.pdf(p.id);
+    res.writeHead(200, { "Content-Type": "application/pdf", "Content-Disposition": r.headers.get("content-disposition") || "attachment", "Cache-Control": "private, no-store" });
+    await pipeline(Readable.fromWeb(r.body), res);
+    return { handled: true };
   });
 
   // new secret link (= API key); the old one stops working right away
@@ -1196,6 +1209,16 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
     return { file: filePaths(t).pdf, type: "application/pdf" };
   });
 
+  // ---------- voluntary support of the project (open source): QR payment with the amount the visitor picks ----------
+  const SUPPORT = { iban: "CZ8020100000000096777198", account: "96777198/2010", message: "Podpora FckScrn" };
+  route("GET", "/api/support/qr.svg", async (req, p, url, res) => {
+    const amount = Math.round(+url.searchParams.get("amount"));
+    if (!(amount >= 1 && amount <= 100000)) badRequest("Částka 1 až 100 000 Kč.");
+    res.writeHead(200, { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400" });
+    res.end(qrSvg(`SPD*1.0*ACC:${SUPPORT.iban}*AM:${amount.toFixed(2)}*CC:CZK*MSG:${SUPPORT.message}`));
+    return { handled: true };
+  });
+
   // ---------- pages ----------
 
   const pages = [
@@ -1206,6 +1229,8 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
     [/^\/en\/?$/, "en/index.html"],
     [/^\/en\/help$/, "en/help.html"],
     [/^\/cookies$/, "cookies.html"],
+    [/^\/podpora$/, "podpora.html"],
+    [/^\/en\/support$/, "en/support.html"],
     [/^\/en\/cookies$/, "en/cookies.html"],
     [/^\/e\/[^/]+$/, "admin.html"],
     [/^\/s\/[^/]+$/, "speaker.html"],
@@ -1224,9 +1249,9 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
 
   // public, indexable pages (only on the product site; a self-hosted instance stays out of search)
   // a test server (SEARCH_INDEX=off) or a self-hosted one stays out of search engines completely
-  const PUBLIC = landing && indexable ? ["/", "/en", "/napoveda", "/en/help", "/nova-akce", "/cookies", "/en/cookies"] : [];
+  const PUBLIC = landing && indexable ? ["/", "/en", "/napoveda", "/en/help", "/nova-akce", "/cookies", "/en/cookies", "/podpora", "/en/support"] : [];
   const siteUrl = req => (publicUrl || originOf(req)).replace(/\/$/, "");
-  const ALT = { "/": ["/", "/en"], "/en": ["/", "/en"], "/napoveda": ["/napoveda", "/en/help"], "/en/help": ["/napoveda", "/en/help"], "/cookies": ["/cookies", "/en/cookies"], "/en/cookies": ["/cookies", "/en/cookies"] };
+  const ALT = { "/": ["/", "/en"], "/en": ["/", "/en"], "/napoveda": ["/napoveda", "/en/help"], "/en/help": ["/napoveda", "/en/help"], "/cookies": ["/cookies", "/en/cookies"], "/en/cookies": ["/cookies", "/en/cookies"], "/podpora": ["/podpora", "/en/support"], "/en/support": ["/podpora", "/en/support"] };
   route("GET", "/robots.txt", async (req, p, url, res) => {
     const site = siteUrl(req);
     const txt = landing && indexable
@@ -1301,6 +1326,14 @@ Sitemap: ${site}/sitemap.xml
   <script src="/assets/consent.js" defer></script>`);
   }
 
+  // ENV_LABEL (e.g. on a staging copy): a tag in the corner and in the tab title, so nobody mixes it up with the
+  // live site; the projection and the speaker monitor stay clean, as in a real room
+  const ENV_LABEL = envLabel ? String(envLabel).replace(/[<>&"]/g, "").slice(0, 40) : null;
+  function labelled(html, file) {
+    if (/projection|presenter/.test(file)) return html;
+    return html.replace(/<title>/, "<title>[TEST] ").replace("</body>", `<div style="position:fixed;left:50%;top:0;transform:translateX(-50%);z-index:99999;pointer-events:none;font:700 11px/1 -apple-system,system-ui,sans-serif;letter-spacing:.08em;padding:6px 12px;border-radius:0 0 8px 8px;border-top:0 !important;color:#000;border:2px solid #000;background:repeating-linear-gradient(135deg,#fff 0 8px,#e5e5e5 8px 16px);box-shadow:0 0 0 2px #fff;white-space:nowrap" title="${ENV_LABEL}">TESTOVACÍ VERZE</div></body>`);
+  }
+
   async function serveStatic(req, res, pathname) {
     let file = pages.find(([re]) => re.test(pathname))?.[1];
     let root = publicDir;
@@ -1324,6 +1357,7 @@ Sitemap: ${site}/sitemap.xml
       if (full.endsWith(".html") && root === publicDir) data = data.toString("utf8").replaceAll("%ORIGIN%", siteUrl(req));
       if (file === "public.html") data = publicPageHead(data, pathname, siteUrl(req));
       if (typeof data === "string") data = analytics(data);
+      if (envLabel && full.endsWith(".html")) data = labelled(data.toString("utf8"), file);
       res.writeHead(200, { "Content-Type": MIME[path.extname(full)] || "application/octet-stream", "Cache-Control": "no-cache" });
       res.end(data);
       return true;

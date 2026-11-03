@@ -1,4 +1,10 @@
-const { app, BrowserWindow, screen, ipcMain, protocol, net, powerSaveBlocker, session } = require("electron");
+const { app, BrowserWindow, screen, ipcMain, protocol, net, powerSaveBlocker, session, shell } = require("electron");
+
+// web links (terms, privacy, help) open in the normal browser, never inside the player windows
+app.on("web-contents-created", (_e, wc) => {
+  wc.setWindowOpenHandler(({ url }) => { if (/^https?:\/\//.test(url)) shell.openExternal(url); return { action: "deny" }; });
+  wc.on("will-navigate", (e, url) => { if (/^https?:\/\//.test(url)) { e.preventDefault(); shell.openExternal(url); } });
+});
 const path = require("node:path");
 const fs = require("node:fs");
 const { pathToFileURL } = require("node:url");
@@ -79,7 +85,7 @@ function snapshot() {
     room: m?.room || null,
     talks: talks(),
     loop: library.loop(),
-    watermark: !!m?.watermark,
+    watermark: !!m?.watermark, billing: m?.billing || { enabled: false }, order,
     questions, polls, message, help, remote: m?.remote || null,
     loopEnabled: config.loopEnabled !== false,
     audioOutput: config.audioOutput || null,
@@ -265,6 +271,8 @@ function onCmd(_e, { type, arg }) {
       messageTimer = setTimeout(() => { message = null; broadcast(); }, 60_000);
       break;
     case "shift": return shift(arg);
+    case "ares": return ares(arg);
+    case "order": return placeOrder(arg);
     case "message": // to the speaker monitor, clears itself after 5 min
       clearTimeout(messageTimer);
       message = arg?.text ? { text: String(arg.text).slice(0, 200), at: Date.now() } : null;
@@ -300,6 +308,31 @@ async function pollQuestions() {
 }
 
 // running late: move the rest of the room's programme, then pick up the new times
+// activating the event from the room (hosted version): company details from ARES, order → proforma with a QR
+let order = { busy: false, error: null, ares: null };
+async function ares(ico) {
+  order = { ...order, busy: true, error: null }; broadcast();
+  try {
+    const res = await fetch(`${config.server}/api/ares/${encodeURIComponent(String(ico || "").replace(/\s/g, ""))}`, { signal: AbortSignal.timeout(10000) });
+    const j = await res.json().catch(() => ({}));
+    order = res.ok ? { busy: false, error: null, ares: j } : { busy: false, error: j.error || "IČO jsme v ARES nenašli.", ares: null };
+  } catch { order = { busy: false, error: "ARES teď neodpovídá.", ares: null }; }
+  broadcast();
+}
+async function placeOrder(data) {
+  order = { ...order, busy: true, error: null }; broadcast();
+  try {
+    const res = await fetch(`${config.server}/api/player/${encodeURIComponent(config.token)}/order`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data), signal: AbortSignal.timeout(30000),
+    });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(j.error || "Objednávka se nepovedla.");
+    order = { busy: false, error: null, ares: null };
+    await runSync();
+  } catch (e) { order = { ...order, busy: false, error: e.message }; }
+  broadcast();
+}
+
 async function shift(arg) {
   try {
     await fetch(`${config.server}/api/player/${encodeURIComponent(config.token)}/shift`, {

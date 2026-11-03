@@ -408,7 +408,7 @@ function billingHTML() {
   if (!b?.enabled) return "";
   const price = `${b.price.toLocaleString("cs-CZ")} Kč`;
   const invoice = `<a href="#fakturace">${t({ cs: "Doklady najdete dole v sekci Fakturace", en: "Documents are in the Invoices section below" })}</a>`;
-  if (b.status === "paid") return `<div class="bill done"><span class="st ready">${t({ cs: "Akce je aktivní a zaplacená", en: "The event is active and paid" })}</span>${invoice}<span class="muted">${t({ cs: "Děkujeme.", en: "Thank you." })}</span></div>`;
+  if (b.status === "paid") return `<div class="bill done paid"><span class="st ready">${t({ cs: "Akce je aktivní a zaplacená", en: "The event is active and paid" })}</span>${invoice}<span class="muted">${t({ cs: "Děkujeme.", en: "Thank you." })}</span></div>`;
   if (b.status === "ordered") return `<div class="bill done"><span class="st warning">${t({ cs: "Akce je aktivní, čekáme na úhradu", en: "The event is active, waiting for payment" })}</span>${invoice}
     <span class="muted">${t({ cs: `Zálohová faktura ${esc(b.invoiceNumber || "")}, splatnost 14 dní.`, en: `Proforma ${esc(b.invoiceNumber || "")}, due in 14 days.` })}</span></div>`;
   const c = billDraft;
@@ -436,6 +436,9 @@ function billingHTML() {
         <label class="field"><span>${t({ cs: "PSČ", en: "Postcode" })}</span><input id="b-zip" name="zip" required value="${esc(c.zip || "")}"></label>
       </div>
       <label class="field"><span>${t({ cs: "E-mail pro fakturu", en: "E-mail for the invoice" })}</span><input id="b-email" name="email" type="email" required value="${esc(c.email || "")}"></label>
+      <label class="toggle"><input type="checkbox" id="b-terms" name="terms" required ${c.terms ? "checked" : ""}>
+        <span>${t({ cs: `Souhlasím s <a href="/obchodni-podminky" target="_blank" rel="noopener">obchodními podmínkami</a> a beru na vědomí <a href="/ochrana-udaju" target="_blank" rel="noopener">zpracování osobních údajů</a>.`,
+          en: `I agree to the <a href="/en/terms" target="_blank" rel="noopener">terms of service</a> and acknowledge the <a href="/en/privacy" target="_blank" rel="noopener">privacy policy</a>.` })}</span></label>
       <div class="row"><button class="btn primary">${t({ cs: "Objednat a aktivovat", en: "Order and activate" })} · ${price}</button><button class="btn ghost" type="button" id="bill-close">${t({ cs: "Zrušit", en: "Cancel" })}</button></div>
       <p class="muted" style="font-size:13px;margin:0">${t({
         cs: "Akce se aktivuje hned. Zálohovou fakturu (splatnost 14 dní) najdete tady ve správě akce v sekci Fakturace, po úhradě tam přibude faktura. Nejsem plátce DPH, cena je konečná.",
@@ -649,7 +652,7 @@ function bind() {
       e.preventDefault();
       const btn = billForm.querySelector("button.primary");
       btn.disabled = true; btn.textContent = t({ cs: "Vystavuji fakturu…", en: "Issuing the invoice…" });
-      if (await act("POST", "/order", formData(billForm), t({ cs: "Hotovo. Akce je aktivní, zálohová faktura je dole v sekci Fakturace.", en: "Done. The event is active; the proforma is in the Invoices section below." }))) { billOpen = false; billDraft = {}; render(); loadDocs(); }
+      if (await act("POST", "/order", { ...formData(billForm), terms: !!$("#b-terms")?.checked }, t({ cs: "Hotovo. Akce je aktivní, zálohová faktura je dole v sekci Fakturace.", en: "Done. The event is active; the proforma is in the Invoices section below." }))) { billOpen = false; billDraft = {}; render(); loadDocs(); }
       else { btn.disabled = false; render(); }
     };
   }

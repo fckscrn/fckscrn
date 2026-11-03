@@ -81,4 +81,5 @@ test("staging label: tag and [TEST] title on pages, never on the projection; sup
   assert.match(await qr.text(), /^<svg/);
   assert.equal((await fetch(site + "/api/support/qr.svg?amount=0")).status, 400);
   assert.equal((await fetch(site + "/en/support")).status, 200);
+  for (const p of ["/obchodni-podminky", "/en/terms", "/ochrana-udaju", "/en/privacy"]) assert.equal((await fetch(site + p)).status, 200, p);
 });

@@ -383,3 +383,14 @@ fieldset.panelists .btn { justify-self: start; }
 .pay dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 14px; }
 .pay dt { color: var(--muted); }
 .pay dd { margin: 0; }
+
+/* billing panel inverted until the event is paid: impossible to overlook */
+.bill:not(.paid) { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.bill:not(.paid) .sub, .bill:not(.paid) .muted { color: color-mix(in srgb, var(--bg) 75%, var(--fg)); }
+.bill:not(.paid) a { color: var(--bg); }
+.bill:not(.paid) .btn { background: var(--fg); color: var(--bg); border-color: var(--bg); }
+.bill:not(.paid) .btn.primary { background: var(--bg); color: var(--fg); }
+.bill:not(.paid) .field span { color: color-mix(in srgb, var(--bg) 75%, var(--fg)); }
+.bill:not(.paid) input:not([type=checkbox]) { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 60%, var(--fg)); }
+.bill:not(.paid) .st::before { border-color: var(--bg); }
+.bill:not(.paid) .st.warning::before { background: linear-gradient(90deg, var(--bg) 50%, transparent 50%); }

@@ -19,7 +19,7 @@ function render(s) {
   if (!s.paired) return renderPair(s);
 
   // rebuild only when structure changes; live page/timer updates are patched in place
-  const key = JSON.stringify([s.talks.map(t => [t.id, t.version, t.local, t.status, t.title, t.startsAt]), s.displays, s.live?.talkId, s.live?.mode, s.outputsOpen, s.nextTalkId, s.room, s.event, s.loop.length, s.loopEnabled, s.screenAccess, s.outputs, s.popupBlocked, s.watermark, s.remote?.url]);
+  const key = JSON.stringify([s.talks.map(t => [t.id, t.version, t.local, t.status, t.title, t.startsAt]), s.displays, s.live?.talkId, s.live?.mode, s.outputsOpen, s.nextTalkId, s.room, s.event, s.loop.length, s.loopEnabled, s.screenAccess, s.outputs, s.popupBlocked, s.watermark, s.remote?.url, s.billing, s.order, billOpen]);
   if (key !== lastKey) { lastKey = key; renderRoom(s); }
   renderLive(s);
   renderCombo(s);
@@ -58,6 +58,62 @@ function renderSync(s) {
   $("#sync-now").onclick = () => fck.cmd("sync");
 }
 
+// hosted version: trial (watermark) → activate right here in the room → proforma with a QR to pay on the spot
+let billOpen = false;
+const billDraft = {};
+function billingBox(s) {
+  const b = s.billing;
+  if (!b?.enabled || b.status === "paid") return "";
+  const money = n => `${Number(n).toLocaleString("cs-CZ", { minimumFractionDigits: 0, maximumFractionDigits: 2 })} Kč`;
+  if (b.status === "ordered") {
+    const p = b.pay;
+    return `<div class="billbox">
+      <div><b>${L("Akce je aktivní", "The event is active")}</b>${p ? ` · ${L(`zálohová faktura ${esc(p.number)} čeká na úhradu`, `proforma ${esc(p.number)} awaiting payment`)}` : ""}</div>
+      ${p ? `<div class="billpay">${p.qr ? `<div class="qr">${p.qr}</div>` : ""}
+        <dl><dt>${L("Částka", "Amount")}</dt><dd class="mono">${money(p.amount)}</dd>
+          <dt>${L("Účet", "Account")}</dt><dd class="mono">${esc(p.account)}</dd>
+          <dt>${L("Variabilní symbol", "Reference (VS)")}</dt><dd class="mono">${esc(p.variableSymbol)}</dd></dl>
+        <p class="hint">${L("Zaplatit jde hned teď QR kódem. Fakturu pak organizátor najde ve správě akce.", "Pay right now with the QR code. The organizer then finds the invoice in the event admin.")}</p></div>` : ""}
+    </div>`;
+  }
+  const o = s.order || {};
+  if (o.ares) { Object.assign(billDraft, { ico: o.ares.ico, name: o.ares.name, dic: o.ares.dic || "", street: o.ares.street, city: o.ares.city, zip: o.ares.zip }); s.order.ares = null; }
+  const d = billDraft, v = k => esc(d[k] || "");
+  const site = esc(s.server || "https://fckscrn.com"); // the room's server (web player: this site; desktop: the paired one)
+  return `<div class="billbox trial">
+    <div class="billhead"><div><b>${L("Zkušební režim", "Trial mode")}</b>
+      <span>${L("Všechno funguje, jen na projekci je vodoznak. Aktivujte akci a zmizí hned.", "Everything works, the projection just shows a watermark. Activate the event and it's gone right away.")}</span></div>
+      ${billOpen ? "" : `<button class="btn primary" id="bill-open">${L("Aktivovat akci", "Activate event")} · ${money(b.price)}</button>`}</div>
+    ${billOpen ? `<form id="bill-form" class="billform">
+      <div class="r"><label><span>${L("IČO", "Company ID")}</span><input name="ico" inputmode="numeric" maxlength="8" value="${v("ico")}"></label>
+        <button class="btn" type="button" id="bill-ares" ${o.busy ? "disabled" : ""}>${L("Doplnit z ARES", "Fill in from ARES")}</button></div>
+      <div class="r"><label class="g"><span>${L("Firma nebo jméno", "Company or name")}</span><input name="name" required value="${v("name")}"></label>
+        <label><span>${L("DIČ (nepovinné)", "VAT ID (optional)")}</span><input name="dic" value="${v("dic")}"></label></div>
+      <div class="r"><label class="g"><span>${L("Ulice a číslo", "Street and number")}</span><input name="street" required value="${v("street")}"></label>
+        <label><span>${L("Město", "City")}</span><input name="city" required value="${v("city")}"></label>
+        <label><span>${L("PSČ", "Postcode")}</span><input name="zip" required value="${v("zip")}"></label></div>
+      <label><span>${L("E-mail pro fakturu", "E-mail for the invoice")}</span><input name="email" type="email" required value="${v("email")}"></label>
+      <label class="chk"><input type="checkbox" name="terms" required ${d.terms ? "checked" : ""}>
+        <span>${L(`Souhlasím s <a href="${site}/obchodni-podminky" target="_blank" rel="noopener">obchodními podmínkami</a> a beru na vědomí <a href="${site}/ochrana-udaju" target="_blank" rel="noopener">zpracování osobních údajů</a>.`,
+          `I agree to the <a href="${site}/en/terms" target="_blank" rel="noopener">terms of service</a> and acknowledge the <a href="${site}/en/privacy" target="_blank" rel="noopener">privacy policy</a>.`)}</span></label>
+      ${o.error ? `<p class="error">${esc(o.error)}</p>` : ""}
+      <div class="r"><button class="btn primary" ${o.busy ? "disabled" : ""}>${o.busy ? L("Odesílám…", "Sending…") : `${L("Objednat a aktivovat", "Order and activate")} · ${money(b.price)}`}</button>
+        <button class="btn ghost" type="button" id="bill-close">${L("Zrušit", "Cancel")}</button></div>
+      <p class="hint">${L("Zálohová faktura se splatností 14 dní se vystaví hned a ukáže se tady s QR kódem. Nejsem plátce DPH, cena je konečná.", "A proforma due in 14 days is issued right away and shown here with a QR code. Not a VAT payer; the price is final.")}</p>
+    </form>` : ""}
+  </div>`;
+}
+function wireBilling() {
+  $("#bill-open")?.addEventListener("click", () => { billOpen = true; lastKey = ""; render(state); });
+  $("#bill-close")?.addEventListener("click", () => { billOpen = false; lastKey = ""; render(state); });
+  const f = $("#bill-form");
+  if (!f) return;
+  const keep = () => { for (const el of f.elements) if (el.name) billDraft[el.name] = el.type === "checkbox" ? el.checked : el.value; };
+  f.addEventListener("input", keep);
+  $("#bill-ares").onclick = () => { keep(); if (billDraft.ico) fck.cmd("ares", billDraft.ico); };
+  f.onsubmit = e => { e.preventDefault(); keep(); fck.cmd("order", { ...billDraft, terms: !!billDraft.terms }); };
+}
+
 function renderPair(s) {
   lastKey = "";
   if ($("#pair-url")) { $("#pair-err").hidden = !s.pairError; $("#pair-err").textContent = s.pairError || ""; return; }
@@ -92,7 +148,7 @@ function renderRoom(s) {
     <div class="head">
       <div><div class="label">${esc(s.event?.name || "")}</div><h1>${esc(s.room?.name || L("Sál", "Room"))}</h1>
         ${s.platform === "web" ? `<p class="hint" style="margin:4px 0 0">${L("Tuhle záložku nechte otevřenou, ovládá projekci.", "Keep this tab open, it drives the projection.")}</p>` : ""}
-        ${s.watermark ? `<p class="notice" style="max-width:52ch">${L("Akce je ve <b>zkušebním režimu</b>, na projekci je vodoznak. Organizátor ho odstraní aktivací akce ve správě.", "The event is in <b>trial mode</b>, the projection shows a watermark. The organizer removes it by activating the event in the admin.")}</p>` : ""}</div>
+        ${billingBox(s)}</div>
       <span class="clock" id="clock">${hhmm()}</span>
     </div>
     <div class="layout">
@@ -160,6 +216,7 @@ function renderRoom(s) {
   </main>`;
 
   app.querySelectorAll("[data-start]").forEach(b => (b.onclick = () => fck.cmd("start", +b.dataset.start)));
+  wireBilling();
   app.querySelectorAll("[data-msg]").forEach(b => (b.onclick = () => fck.cmd("message", { text: b.dataset.msg })));
   $("#msgform")?.addEventListener("submit", e => { e.preventDefault(); const v = $("#msgtext").value.trim(); if (v) { fck.cmd("message", { text: v }); $("#msgtext").value = ""; } });
   app.querySelectorAll("[data-display]").forEach(sel => (sel.onchange = () => fck.cmd("role", { displayId: sel.dataset.display, role: sel.value })));

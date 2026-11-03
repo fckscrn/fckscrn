@@ -234,15 +234,15 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
   });
 
   // order = activate now (no watermark), invoice goes out by e-mail, payment comes later
-  route("POST", "/api/admin/:t/order", async (req, p) => {
+  async function placeOrder(e, b) {
     if (!billing) notFound("Platby nejsou zapnuté.");
-    const e = eventByAdmin(p.t), b = await body(req);
     if (e.billing_status !== "trial") throw new HttpError(409, "Akce už je objednaná.");
     const c = {
       name: str(b.name, "Název firmy nebo jméno", true), ico: b.ico ? String(b.ico).replace(/\s/g, "") : null, dic: str(b.dic),
       street: str(b.street, "Ulice", true), city: str(b.city, "Město", true), zip: str(b.zip, "PSČ", true), email: str(b.email, "E-mail", true),
     };
     if (c.ico && !/^\d{8}$/.test(c.ico)) badRequest("IČO má 8 číslic.");
+    if (b.terms !== true) badRequest("Pro objednání je potřeba souhlas s obchodními podmínkami.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) badRequest("E-mail nevypadá správně.");
     const price = priceOf(e);
     // own reference per order (event ids can come back after a delete)
@@ -259,8 +259,36 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
       throw new HttpError(502, "Zálohovou fakturu se teď nepodařilo vystavit. Zkuste to prosím za chvíli znovu.");
     }
     run(`UPDATE events SET billing_status = 'ordered', billing = ?, billing_ref = ?, invoice_number = ?, price = ?, ordered_at = ? WHERE id = ?`,
-      JSON.stringify(c), ref, inv.number, price, new Date().toISOString(), e.id);
+      JSON.stringify({ ...c, termsAcceptedAt: new Date().toISOString(), termsVersion: "1.0" }), ref, inv.number, price, new Date().toISOString(), e.id);
+    docsCache.delete(e.id);
+  }
+  route("POST", "/api/admin/:t/order", async (req, p) => {
+    await placeOrder(eventByAdmin(p.t), await body(req));
     return adminView(eventByAdmin(p.t));
+  });
+
+  // billing as the room computer sees it: trial (order button) or the proforma to pay on the spot (QR)
+  const docsCache = new Map(); // event id → { at, docs }
+  async function eventDocs(e) {
+    const c = docsCache.get(e.id);
+    if (c && Date.now() - c.at < 60_000) return c.docs;
+    const docs = await billing.invoicing.documents(e.billing_ref);
+    docsCache.set(e.id, { at: Date.now(), docs });
+    return docs;
+  }
+  async function roomBilling(e) {
+    if (!billing) return { enabled: false };
+    const out = { enabled: true, status: e.billing_status, price: e.price || priceOf(e), number: e.invoice_number || null };
+    if (e.billing_status === "ordered" && e.billing_ref) {
+      try { const pro = (await eventDocs(e)).map(documentOut).find(d => d.kind === "proforma" && d.pay); if (pro) out.pay = { number: pro.number, dueDate: pro.dueDate, ...pro.pay }; }
+      catch (err) { console.error("room billing failed", err.message); }
+    }
+    return out;
+  }
+  route("POST", "/api/player/:t/order", async (req, p) => {
+    const r = roomByPlayer(p.t), e = one("SELECT * FROM events WHERE id = ?", r.event_id);
+    await placeOrder(e, await body(req));
+    return { billing: await roomBilling(one("SELECT * FROM events WHERE id = ?", e.id)) };
   });
 
   route("GET", "/api/admin/:t/documents", async (req, p) => {
@@ -981,6 +1009,7 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
       event: eventOut(e),
       room: { id: r.id, name: r.name },
       watermark: watermark(e),
+      billing: await roomBilling(e),
       talks: q("SELECT * FROM talks WHERE room_id = ? ORDER BY starts_at, id", r.id).map(t => ({
         ...talkOut(t),
         notes: JSON.parse(t.notes || "[]"),
@@ -1230,6 +1259,10 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
     [/^\/en\/help$/, "en/help.html"],
     [/^\/cookies$/, "cookies.html"],
     [/^\/podpora$/, "podpora.html"],
+    [/^\/obchodni-podminky$/, "obchodni-podminky.html"],
+    [/^\/en\/terms$/, "en/terms.html"],
+    [/^\/ochrana-udaju$/, "ochrana-udaju.html"],
+    [/^\/en\/privacy$/, "en/privacy.html"],
     [/^\/en\/support$/, "en/support.html"],
     [/^\/en\/cookies$/, "en/cookies.html"],
     [/^\/e\/[^/]+$/, "admin.html"],
@@ -1249,9 +1282,9 @@ export function createApp({ dataDir, publicDir, playerDir, soffice = null, reten
 
   // public, indexable pages (only on the product site; a self-hosted instance stays out of search)
   // a test server (SEARCH_INDEX=off) or a self-hosted one stays out of search engines completely
-  const PUBLIC = landing && indexable ? ["/", "/en", "/napoveda", "/en/help", "/nova-akce", "/cookies", "/en/cookies", "/podpora", "/en/support"] : [];
+  const PUBLIC = landing && indexable ? ["/", "/en", "/napoveda", "/en/help", "/nova-akce", "/cookies", "/en/cookies", "/podpora", "/en/support", "/obchodni-podminky", "/en/terms", "/ochrana-udaju", "/en/privacy"] : [];
   const siteUrl = req => (publicUrl || originOf(req)).replace(/\/$/, "");
-  const ALT = { "/": ["/", "/en"], "/en": ["/", "/en"], "/napoveda": ["/napoveda", "/en/help"], "/en/help": ["/napoveda", "/en/help"], "/cookies": ["/cookies", "/en/cookies"], "/en/cookies": ["/cookies", "/en/cookies"], "/podpora": ["/podpora", "/en/support"], "/en/support": ["/podpora", "/en/support"] };
+  const ALT = { "/": ["/", "/en"], "/en": ["/", "/en"], "/napoveda": ["/napoveda", "/en/help"], "/en/help": ["/napoveda", "/en/help"], "/cookies": ["/cookies", "/en/cookies"], "/en/cookies": ["/cookies", "/en/cookies"], "/podpora": ["/podpora", "/en/support"], "/en/support": ["/podpora", "/en/support"], "/obchodni-podminky": ["/obchodni-podminky", "/en/terms"], "/en/terms": ["/obchodni-podminky", "/en/terms"], "/ochrana-udaju": ["/ochrana-udaju", "/en/privacy"], "/en/privacy": ["/ochrana-udaju", "/en/privacy"] };
   route("GET", "/robots.txt", async (req, p, url, res) => {
     const site = siteUrl(req);
     const txt = landing && indexable

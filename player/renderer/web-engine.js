@@ -18,6 +18,7 @@ export function createEngine({ token, emit }) {
 
   let manifest = store.get("manifest", null);
   let audioNames = 0; // bumped when the control tab unlocked output names
+  let order = { busy: false, error: null, ares: null }; // activating the event from the room (hosted version)
   let config = store.get("config", { roles: {}, loopEnabled: true });
   let cached = new Set();               // file URLs available offline
   let sync = { state: "idle", at: manifest?.syncedAt || null, message: "" };
@@ -127,7 +128,7 @@ export function createEngine({ token, emit }) {
       paired: true, server: location.origin,
       event: manifest?.event || null, room: manifest?.room || null,
       talks: talks(), loop: loop(), loopEnabled: config.loopEnabled !== false, audioOutput: config.audioOutput || null, audioNames,
-      watermark: !!manifest?.watermark,
+      watermark: !!manifest?.watermark, billing: manifest?.billing || { enabled: false }, order,
       questions, polls, message, help, remote: manifest?.remote || null,
       sync, pairError: null,
       displays: displayList().map(({ rect, ...d }) => d),
@@ -261,6 +262,25 @@ export function createEngine({ token, emit }) {
       case "answer":
         fetch(`/api/player/${encodeURIComponent(token)}/questions/${arg.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ answered: arg.answered }) })
           .catch(() => {}).then(pollQuestions);
+        return;
+      case "ares": // company details by IČO for the order form
+        order = { ...order, busy: true, error: null }; changed();
+        fetch(`/api/ares/${encodeURIComponent(String(arg || "").replace(/\s/g, ""))}`).then(async r => {
+          const j = await r.json().catch(() => ({}));
+          order = r.ok ? { busy: false, error: null, ares: j } : { busy: false, error: j.error || L("IČO jsme v ARES nenašli.", "Company ID not found in ARES."), ares: null };
+        }).catch(() => { order = { busy: false, error: L("ARES teď neodpovídá.", "ARES isn't answering."), ares: null }; }).then(changed);
+        return;
+      case "order": // the technician activates the event on site: proforma right away, QR until it's paid
+        order = { ...order, busy: true, error: null }; changed();
+        fetch(`/api/player/${encodeURIComponent(token)}/order`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(arg) })
+          .then(async r => {
+            const j = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(j.error || L("Objednávka se nepovedla.", "The order failed."));
+            order = { busy: false, error: null, ares: null };
+            return runSync();
+          })
+          .catch(e => { order = { ...order, busy: false, error: e.message }; })
+          .then(changed);
         return;
       case "loop": config.loopEnabled = !!arg; saveConfig(); break;
       case "audioNames": audioNames = Date.now(); break;

@@ -59,7 +59,10 @@ test("trial → order (active, proforma) → documents in the admin → paid; wa
   assert.deepEqual((await api("GET", `${admin}/documents`)).data.documents, [], "nothing before the order");
 
   assert.equal((await api("POST", `${admin}/order`, { name: "X", street: "a", city: "b", zip: "1", email: "nope" })).status, 400);
-  v = (await api("POST", `${admin}/order`, { ico: "12345679", name: "Testovací s.r.o.", street: "Testovací 123/4", city: "Brno", zip: "64100", email: "info@example.cz" })).data;
+  const noTerms = await api("POST", `${admin}/order`, { name: "X", street: "a", city: "b", zip: "1", email: "a@b.cz" });
+  assert.equal(noTerms.status, 400, "consent to the terms is required");
+  assert.match(noTerms.data.error, /obchodními podmínkami/);
+  v = (await api("POST", `${admin}/order`, { ico: "12345679", name: "Testovací s.r.o.", street: "Testovací 123/4", city: "Brno", zip: "64100", email: "info@example.cz", terms: true })).data;
   assert.equal(v.billing.status, "ordered");
   assert.equal(v.billing.invoiceNumber, "Z20260001");
   const order = fake.proformas[0];
@@ -67,6 +70,7 @@ test("trial → order (active, proforma) → documents in the admin → paid; wa
   assert.deepEqual([order.items[0].unit_price, order.items[0].unit, order.dueDays], [1490, "akce", 14]);
   assert.match(order.items[0].description, /„Meetup“ \(4\. 11\. 2026\), jeden sál/);
   assert.equal(order.customer.ico, "12345679");
+  assert.match(JSON.parse(JSON.stringify(v.billing.customer)).termsAcceptedAt, /^\d{4}-/, "consent time kept with the order");
   assert.equal((await api("GET", player)).data.watermark, false, "active right after ordering");
   assert.equal((await api("POST", `${admin}/order`, {})).status, 409);
 
@@ -89,10 +93,28 @@ test("trial → order (active, proforma) → documents in the admin → paid; wa
   assert.deepEqual(docs.map(d => [d.kind, d.status, !!d.pay]), [["proforma", "paid", false], ["invoice", "paid", false]]);
 });
 
+test("room computer: billing in the sync, order on site, proforma QR until paid", async () => {
+  const { adminToken } = (await api("POST", "/api/events", { name: "Na místě", mode: "single" })).data;
+  const v = (await api("GET", `/api/admin/${adminToken}`)).data;
+  const player = `/api/player/${v.rooms[0].playerToken}`;
+  let m = (await api("GET", player)).data;
+  assert.deepEqual([m.billing.enabled, m.billing.status, m.billing.price, m.watermark], [true, "trial", 1490, true]);
+  assert.equal((await api("POST", `${player}/order`, { name: "Firma", street: "a", city: "b", zip: "1", email: "a@b.cz" })).status, 400, "needs the terms");
+  const r = await api("POST", `${player}/order`, { name: "Firma", street: "a", city: "b", zip: "1", email: "a@b.cz", terms: true });
+  assert.equal(r.status, 200);
+  assert.equal(r.data.billing.status, "ordered");
+  assert.match(r.data.billing.pay.qr, /^<svg/);
+  m = (await api("GET", player)).data;
+  assert.equal(m.watermark, false);
+  assert.equal(m.billing.pay.amount, 1490);
+  assert.equal((await api("POST", `${player}/order`, { name: "Firma", street: "a", city: "b", zip: "1", email: "a@b.cz", terms: true })).status, 409);
+  assert.equal(JSON.stringify(m).includes(adminToken), false, "no admin token in the room's data");
+});
+
 test("multi-room price; another event can't read the documents", async () => {
   const { adminToken } = (await api("POST", "/api/events", { name: "Konf", mode: "multi" })).data;
   const admin = `/api/admin/${adminToken}`;
-  await api("POST", `${admin}/order`, { name: "Firma", street: "a", city: "b", zip: "1", email: "a@b.cz" });
+  await api("POST", `${admin}/order`, { name: "Firma", street: "a", city: "b", zip: "1", email: "a@b.cz", terms: true });
   assert.equal((await api("GET", admin)).data.billing.price, 4990);
   assert.equal(fake.proformas.at(-1).items[0].unit_price, 4990);
   assert.equal((await fetch(`${base}${admin}/documents/p-1/pdf`)).status, 404, "the first event's proforma");

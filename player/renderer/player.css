@@ -282,3 +282,26 @@ body.combined { overflow: hidden; }
 .qa-empty { font-size: 2.4vh; color: #6a6a6a; margin: 0; }
 
 .combo-view .msgslot .spkmsg { position: static; }
+
+/* activation in the room (hosted version) */
+.billbox { margin-top: 12px; border: 2px solid var(--fg); border-radius: 10px; padding: 12px 14px; display: grid; gap: 12px; max-width: 760px; font-size: 14px; }
+.billbox.trial { background: var(--fg); color: var(--bg); }
+.billbox.trial .btn { border-color: var(--bg); background: var(--fg); color: var(--bg); }
+.billbox.trial .btn.primary { background: var(--bg); color: var(--fg); }
+.billbox .billhead { display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.billbox .billhead span { display: block; opacity: .8; font-size: 13px; }
+.billform { display: grid; gap: 10px; }
+.billform .r { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.billform label { display: grid; gap: 4px; font-size: 12px; }
+.billform label.g { flex: 1; min-width: 180px; }
+.billform input:not([type=checkbox]) { font: inherit; font-size: 14px; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--bg); background: var(--fg); color: var(--bg); }
+.billform .chk { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+.billform .error { margin: 0; font-weight: 700; }
+.billform .hint, .billpay .hint { margin: 0; font-size: 12px; opacity: .8; }
+.billpay { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.billpay .qr { width: 130px; background: #fff; padding: 6px; border-radius: 6px; }
+.billpay .qr svg { width: 100%; height: auto; display: block; }
+.billpay dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; }
+.billpay dt { opacity: .7; }
+.billpay dd { margin: 0; }
+.billform .chk a { color: inherit; text-decoration: underline; }
